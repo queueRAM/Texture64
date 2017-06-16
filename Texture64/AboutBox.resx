@@ -117,41 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="color" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\color.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="logoPictureBox.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAS2SURBVFhHrVYhdKtAEEQiIytjKysjYyMjI5HYSCTyLBKJRGKRyEgsEonE7p/Zu4MjTV7S/vK6
+        JW2O29mZ2T2i6M1Lyi56Fm9u8btlm6R1L9IMIt0kMoq9HLDf7f7iKb/5La9EKiRXAMh8m0Xws1wBO38G
+        JKgcyW82PADg2Fw90Py1RNxwLluZy46bBwAgAROGDFASgvPrKBNBcs1vJPIPjUUjU3EPwnkAOfWiFyCL
+        BepYavGl//43PiGAPq9lMLVsQVCKwAes0lVPoFYmALz3yE9BEECXlULzfQOBJHNtkDhDogT3FH8XMnsA
+        pP8BgLFRid7zKBfWqZH2WigIsjGaBmyUMjefIm2MxBESIXp3786oHizQC75N6QEGZJpa/PoJAC6ukkya
+        q0GxJUAUMpY7VIuELYIA+h12BqBpLzIAVH+AH+AFskAfkAkGATkAL0Es7YRKelTdgIWGbOR7AIgsgAb3
+        Lpa538s8HVElqp8BpCcz6doxZIOe0Lv7/IyFTR/7ocOHUU0P6psskgEARgCYAGCCDPuPSGoDMKNjQeUA
+        S2jfpSX9DPH3lwCWB1bUfQkW8ghAoiXp2MSa/Php2ZCb8wU+T1hv29e2sJ8lY9lIjD3iaxQxNtdm8rGf
+        FYgF0Re51GDghod9UssEZKAfgpjBzoj12j1qXDtLGEl2khj7PAUQog4p7I2RMo3gAwuCTKgclWMASQWA
+        mHyqYpg2V+PaDrJdlBeJxBdNLjsY+BsIMhCiDUcwqSySD6nxcAfaCeIA6r/2kRgAI5AJwftQfUlfd9IC
+        QJ0ZeKeQPEdyPBsdkDgBAAB9CMDTNgUj2ANps6vkl1gqbEQmKIVnowcbZKXDfeprO6Kh3ozWS8qzTX5y
+        AMgAJNsNFsRykQFP2b12BEF5yuSkIApsQk/QmGvEMmAi6tnA0DE9S10VEp+R/Oiqh1Q7DLAFgKNCYlBJ
+        jZbxe2cgfyg1ZCL5lAxATLLTqLMjzIZ3Bm1bZOfQcTHWN61eqYdEPvk9ALaFgjgl0NCdAQNBOCDeH7zz
+        +w7a3jgdC1Duj2H/zrAMoAGDq1+TEwBk2mFeMFQCb4bFoaC2Mpk6l56w0QRR6xlhQfrj2h/Zvn3XF5iW
+        EsAvMeSiFDQgWVhMuADgcKAMWPyBVmrQev0CoNbPBMX24ngOpfJ9vnROwEiaw4SQVj0Ao6oETwFAJx0U
+        XAizXOqD9m9RpWLKVC7lUc7FAa1l5KYHlHtncEzcTz8WsbifHkD/hzNgK4Ebj8oC6YJWZIOa6d8ExjvC
+        mBTzgADs+0LoFc9GkxvZnePVgNQ+qPyxBB4EDcnEnNtMTGY4xXh3kWeJdPnKgveLSVL5Ou9Vby+pup/V
+        vw3ASaEP0jTOvWomAiJLWLNHC6bXEwZTItfLRfaHj6ViZY/Pse+5B4cPYuO5TRes1fvOsBJwA4deDcRN
+        yA6BkBVUWkCWCKM5Zr+TvTA5n3dxn/yxB0IgzgNagTOQd7HOczICEDkBcM67gaPg+B3NTO0J+HuB9kh+
+        9kX4/4VKTycB8TMoZrLGnfEE4aeeMkHTPkn8yoQPgWklTOYHC72ABDyaXyX6LwZebY73xLeYfOiB917U
+        11WYgDw1n8ZP9/sHaa9Rln66hJYAAAAASUVORK5CYII=
+</value>
   </data>
-  <data name="minus" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\minus.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="folder_open_image" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\folder-open-image.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="plus" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\plus.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="image_import" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\image-import.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="question" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\question.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="flower_0" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\flower_0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="flower_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\flower_1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="flower_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\flower_2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="flower_3" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\flower_3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="disk" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\disk.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="disk_black" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\disk_black.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
+  <metadata name="timerAnimate.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
 </root>

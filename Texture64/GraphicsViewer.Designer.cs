@@ -35,8 +35,8 @@
          this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
          this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
          this.Name = "GraphicsViewer";
-         this.Click += new System.EventHandler(this.GraphicsViewer_Click);
          this.Paint += new System.Windows.Forms.PaintEventHandler(this.GraphicsViewer_Paint);
+         this.Resize += new System.EventHandler(this.GraphicsViewer_Resize);
          this.ResumeLayout(false);
 
         }

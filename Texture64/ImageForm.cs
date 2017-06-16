@@ -1,148 +1,131 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
+using System.Windows.Forms;
 
 namespace Texture64
 {
    public partial class ImageForm : Form
    {
+      private string savePath = null;
       private byte[] romData;
       private byte[] paletteData;
+      private byte[] curPalette;
+      private int offset = 0;
+      private N64Codec viewerCodec = N64Codec.RGBA16;
       private bool separatePalette = false;
       private bool validData;
+      private string basename;
       private string lastFilename;
       private List<GraphicsViewer> viewers = new List<GraphicsViewer>();
+
       public ImageForm()
       {
          InitializeComponent();
          viewers.Add(graphicsViewerMap);
-         viewers.Add(graphicsViewer8);
-         viewers.Add(graphicsViewer16);
-         viewers.Add(graphicsViewer32);
-         viewers.Add(graphicsViewer64);
+         viewers.Add(graphicsViewer8x8);
+         viewers.Add(graphicsViewer8x16);
+         viewers.Add(graphicsViewer16x16);
+         viewers.Add(graphicsViewer16x32);
+         viewers.Add(graphicsViewer32x32);
+         viewers.Add(graphicsViewer32x64);
+         viewers.Add(graphicsViewer64x32);
+         viewers.Add(graphicsViewer64x64);
          viewers.Add(graphicsViewerCustom);
 
-         gviewPalette.SetCodec(GraphicsViewer.Codec.RGBA16);
-
-         resizeMap();
+         gviewPalette.Codec = N64Codec.RGBA16;
 
          toolStripCodec.SelectedIndex = 0;
+
+         // bind the value of the scrollbar to the value of the offset box
+         numericOffset.DataBindings.Add("Value", vScrollBarOffset, "Value", false, DataSourceUpdateMode.OnPropertyChanged);
       }
 
-      private int hexToInt(string hex)
+      private static bool SaveBinFile(string filePath, byte[] data, int start, int end)
       {
-         int offset = 0;
-         if (!String.IsNullOrWhiteSpace(hex))
+         try
          {
-            try
-            {
-               offset = Convert.ToInt32(hex, 16);
-            }
-            catch (OverflowException)
-            {
-               offset = 0;
-            }
-            catch (FormatException)
-            {
-               offset = 0;
-            }
+            FileStream outStream = File.OpenWrite(filePath);
+            outStream.Write(data, start, end - start);
+            outStream.Close();
+            return true;
          }
-         return offset;
-      }
-
-      private void resizeMap()
-      {
-         graphicsViewerMap.PixWidth = graphicsViewerMap.Width / 2;
-         graphicsViewerMap.PixHeight = graphicsViewerMap.Height / 2;
-         graphicsViewerMap.Invalidate();
-      }
-
-      private void listFiles(String filePath)
-      {
-         string path = Path.GetDirectoryName(filePath);
-         string file = Path.GetFileName(filePath);
-         string[] dirList = Directory.GetFiles(path);
-         fileListView.Items.Clear();
-         foreach (string dirEntry in dirList)
+         catch
          {
-            string entryFile = Path.GetFileName(dirEntry);
-            string extension = Path.GetExtension(entryFile);
-            if (extension == ".bin")
-            {
-               ListViewItem lvi = new ListViewItem(entryFile);
-               lvi.Tag = dirEntry;
-               if (entryFile == file)
-               {
-                  lvi.Selected = true;
-               }
-               fileListView.Items.Add(lvi);
-            }
+            return false;
          }
       }
 
       private void readData(String filePath)
       {
-         string basename = Path.GetFileNameWithoutExtension(filePath);
+         basename = Path.GetFileNameWithoutExtension(filePath);
          basename = basename.TrimStart(new char[] { '0' });
-         romData = System.IO.File.ReadAllBytes(filePath);
+         try
+         {
+            romData = System.IO.File.ReadAllBytes(filePath);
+         }
+         catch (Exception e)
+         {
+            MessageBox.Show(e.Message, "Error reading " + filePath);
+            statusStripFile.Text = "Error reading " + filePath;
+            statusStripFile.ForeColor = Color.Red;
+            return;
+         }
+         savePath = filePath;
+         numericOffset.Maximum = romData.Length - 1;
+         vScrollBarOffset.Maximum = romData.Length - 1;
          if (!separatePalette)
          {
             paletteData = romData;
+            numericPalette.Enabled = true;
+            numericPalette.Maximum = paletteData.Length;
+            numericSplitOffset.Maximum = paletteData.Length;
          }
          foreach (GraphicsViewer gv in viewers)
          {
-            gv.BaseFileName = basename;
             gv.SetData(romData);
             gv.Invalidate();
          }
          UpdatePalette();
          statusStripFile.Text = filePath;
+         statusStripFile.ForeColor = Color.Black;
          statusStripLength.Text = String.Format("0x{0:X}", romData.Length);
-      }
-
-      private void updateViewers()
-      {
-         int offset = hexToInt(textHex.Text);
-         if (romData != null && offset < romData.Length)
-         {
-            foreach (GraphicsViewer gv in viewers)
-            {
-               gv.SetOffset(offset);
-            }
-         }
+         numericOffset.Enabled = true;
+         vScrollBarOffset.Enabled = true;
       }
 
       private void UpdatePalette()
       {
-         int offset = hexToInt(textPalette.Text);
-         if (paletteData != null && offset < paletteData.Length)
+         int palOffset = (int)numericPalette.Value;
+         if (paletteData != null && palOffset < paletteData.Length)
          {
-            byte[] palette = new byte[512];
-            int length = palette.Length;
+            curPalette = new byte[512];
+            int length = curPalette.Length;
             int splitLength = 0;
             if (splitPaletteCheck.Checked)
             {
-               splitLength = hexToInt(splitLengthText.Text);
-               int splitOffset = hexToInt(splitOffsetText.Text);
+               splitLength = (int)numericSplitLength.Value;
+               int splitOffset = (int)numericSplitOffset.Value;
                if (splitLength + splitOffset > paletteData.Length)
                {
                   splitLength = paletteData.Length - splitOffset;
                }
-               Array.Copy(paletteData, splitOffset, palette, palette.Length - splitLength, splitLength);
+               Array.Copy(paletteData, splitOffset, curPalette, curPalette.Length - splitLength, splitLength);
             }
             length -= splitLength;
-            if (length + offset > paletteData.Length)
+            if (length + palOffset > paletteData.Length)
             {
-               length = paletteData.Length - offset;
+               length = paletteData.Length - palOffset;
             }
-            Array.Copy(paletteData, offset, palette, 0, length);
+            Array.Copy(paletteData, palOffset, curPalette, 0, length);
             foreach (GraphicsViewer gv in viewers)
             {
-               gv.SetPalette(palette);
+               gv.SetPalette(curPalette);
                gv.Invalidate();
             }
-            gviewPalette.SetData(palette);
+            gviewPalette.SetData(curPalette);
             gviewPalette.Invalidate();
          }
       }
@@ -159,161 +142,163 @@ namespace Texture64
          if (dresult == DialogResult.OK)
          {
             readData(ofd.FileName);
-            listFiles(ofd.FileName);
+            toolStripInsert.Enabled = true;
+            toolStripSave.Enabled = true;
          }
       }
 
-      private void textHex_TextChanged(object sender, EventArgs e)
+      private void toolStripInsert_Click(object sender, EventArgs e)
       {
-         updateViewers();
+         OpenFileDialog ofd = new OpenFileDialog();
+
+         ofd.Filter = "Image files (*.bmp, *.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.bmp; *.jpg; *.jpeg; *.jpe; *.jfif; *.png";
+         ofd.FilterIndex = 1;
+
+         DialogResult dresult = ofd.ShowDialog();
+
+         if (dresult == DialogResult.OK)
+         {
+            insertImageFile(ofd.FileName);
+         }
+      }
+
+      private void toolStripSave_Click(object sender, EventArgs e)
+      {
+         SaveBinFile(savePath, romData, 0, romData.Length);
+      }
+
+      private void toolStripCodec_SelectedIndexChanged(object sender, EventArgs e)
+      {
+         N64Codec prevCodec = viewerCodec;
+         viewerCodec = N64Codec.RGBA16;
+         switch (toolStripCodec.SelectedIndex)
+         {
+            case 0: viewerCodec = N64Codec.RGBA16; break;
+            case 1: viewerCodec = N64Codec.RGBA32; break;
+            case 2: viewerCodec = N64Codec.IA16; break;
+            case 3: viewerCodec = N64Codec.IA8; break;
+            case 4: viewerCodec = N64Codec.IA4; break;
+            case 5: viewerCodec = N64Codec.I8; break;
+            case 6: viewerCodec = N64Codec.I4; break;
+            case 7: viewerCodec = N64Codec.CI8; break;
+            case 8: viewerCodec = N64Codec.CI4; break;
+            case 9: viewerCodec = N64Codec.ONEBPP; break;
+         }
+         if (prevCodec != viewerCodec)
+         {
+            foreach (GraphicsViewer gv in viewers)
+            {
+               gv.Codec = viewerCodec;
+               gv.Invalidate();
+            }
+            switch (viewerCodec)
+            {
+               case N64Codec.CI8:
+                  gviewPalette.PixHeight = 16;
+                  gviewPalette.PixWidth = 16;
+                  gviewPalette.PixScale = 8;
+                  break;
+               case N64Codec.CI4:
+                  gviewPalette.PixHeight = 4;
+                  gviewPalette.PixWidth = 4;
+                  gviewPalette.PixScale = 32;
+                  break;
+            }
+            gviewPalette.Invalidate();
+         }
+      }
+
+      private void bgColorButton_Click(object sender, EventArgs e)
+      {
+         if (colorDialogBg.ShowDialog() == DialogResult.OK)
+         {
+            BackColor = colorDialogBg.Color;
+         }
+      }
+
+      private void toolStripAbout_Click(object sender, EventArgs e)
+      {
+         if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift)
+         {
+            new TestForm().ShowDialog();
+         }
+         else
+         {
+            new AboutBox().ShowDialog();
+         }
+      }
+
+      private void numericOffset_ValueChanged(object sender, EventArgs e)
+      {
+         if (romData != null)
+         {
+            if (numericOffset.Value < romData.Length)
+            {
+               offset = (int)numericOffset.Value;
+               if (offset < romData.Length)
+               {
+                  foreach (GraphicsViewer gv in viewers)
+                  {
+                     gv.SetOffset(offset);
+                  }
+               }
+            }
+         }
       }
 
       private void numericUpDownWidth_ValueChanged(object sender, EventArgs e)
       {
          graphicsViewerCustom.PixWidth = (int)numericUpDownWidth.Value;
-         graphicsViewerCustom.Invalidate();
+         graphicsViewerCustom.Refresh();
       }
 
       private void numericUpDownHeight_ValueChanged(object sender, EventArgs e)
       {
          graphicsViewerCustom.PixHeight = (int)numericUpDownHeight.Value;
-         graphicsViewerCustom.Invalidate();
-      }
-
-      private void vScrollBar1_Scroll(object sender, ScrollEventArgs e)
-      {
-         if (romData != null)
-         {
-            int offset = (vScrollBar1.Value * (romData.Length / vScrollBar1.Maximum)) & 0x7FFFFFF8;
-            textHex.Text = String.Format("{0:X}", offset);
-            updateViewers();
-         }
-      }
-
-      private void toolStripCodec_SelectedIndexChanged(object sender, EventArgs e)
-      {
-         GraphicsViewer.Codec codec = GraphicsViewer.Codec.RGBA16;
-         switch (toolStripCodec.SelectedIndex)
-         {
-            case 0: codec = GraphicsViewer.Codec.RGBA16; break;
-            case 1: codec = GraphicsViewer.Codec.RGBA32; break;
-            case 2: codec = GraphicsViewer.Codec.IA16; break;
-            case 3: codec = GraphicsViewer.Codec.IA8; break;
-            case 4: codec = GraphicsViewer.Codec.IA4; break;
-            case 5: codec = GraphicsViewer.Codec.I8; break;
-            case 6: codec = GraphicsViewer.Codec.I4; break;
-            case 7: codec = GraphicsViewer.Codec.CI8; break;
-            case 8: codec = GraphicsViewer.Codec.ONEBPP; break;
-         }
-         foreach (GraphicsViewer gv in viewers)
-         {
-            gv.SetCodec(codec);
-            gv.Invalidate();
-         }
-      }
-
-      private void ImageForm_ResizeEnd(object sender, EventArgs e)
-      {
-         resizeMap();
-      }
-
-      private int offsetSize()
-      {
-         int blockSize = (int)numericUpDownWidth.Value * (int)numericUpDownHeight.Value;
-         switch (toolStripCodec.SelectedIndex)
-         {
-            case 0: blockSize *= 2; break;
-            case 1: blockSize *= 4; break;
-            case 2: blockSize *= 2; break;
-            case 3: break;
-            case 4: blockSize /= 2; break;
-            case 5: break;
-            case 6: blockSize /= 2; break;
-            case 7: break;
-            case 8: blockSize /= 8; break;
-         }
-         return blockSize;
-      }
-
-      private void offsetMinusButton_Click(object sender, EventArgs e)
-      {
-         int curOffset = hexToInt(textHex.Text);
-         int change = offsetSize();
-         curOffset = Math.Max(0, curOffset - change);
-         textHex.Text = String.Format("{0:X}", curOffset);
-      }
-
-      private void offsetPlusButton_Click(object sender, EventArgs e)
-      {
-         int curOffset = hexToInt(textHex.Text);
-         int change = offsetSize();
-         curOffset = Math.Min(romData.Length - change, curOffset + change);
-         textHex.Text = String.Format("{0:X}", curOffset);
-      }
-
-      private void palPlusButton_Click(object sender, EventArgs e)
-      {
-         int val = hexToInt(textPalette.Text);
-         val = Math.Min(paletteData.Length - 0x200, val + 0x200);
-         textPalette.Text = String.Format("{0:X}", val);
-      }
-
-      private void palMinusButton_Click(object sender, EventArgs e)
-      {
-         int val = hexToInt(textPalette.Text);
-         val = Math.Max(0, val - 0x200);
-         textPalette.Text = String.Format("{0:X}", val);
+         graphicsViewerCustom.Refresh();
       }
 
       private void splitPaletteCheck_CheckedChanged(object sender, EventArgs e)
       {
          bool splitEnable = splitPaletteCheck.Checked;
-         splitLengthText.Enabled = splitEnable;
-         splitOffsetText.Enabled = splitEnable;
+         numericSplitLength.Enabled = splitEnable;
+         numericSplitOffset.Enabled = splitEnable;
          splitMinusButton.Enabled = splitEnable;
          splitPlusButton.Enabled = splitEnable;
          UpdatePalette();
       }
 
-      private void textPalette_TextChanged(object sender, EventArgs e)
+      private void numericTextPalette_ValueChanged(object sender, EventArgs e)
       {
          UpdatePalette();
       }
 
-      private void splitLengthText_TextChanged(object sender, EventArgs e)
+      private void numericSplitLength_ValueChanged(object sender, EventArgs e)
       {
          UpdatePalette();
       }
 
-      private void splitOffsetText_TextChanged(object sender, EventArgs e)
+      private void numericSplitOffset_ValueChanged(object sender, EventArgs e)
       {
          UpdatePalette();
-      }
-
-      private void bgColorButton_Click(object sender, EventArgs e)
-      {
-         if (colorDialog1.ShowDialog() == DialogResult.OK)
-         {
-            BackColor = colorDialog1.Color;
-         }
       }
 
       private void offsetSplit(int delta)
       {
-         int offset = hexToInt(splitOffsetText.Text) + delta;
+         int offset = (int)numericSplitOffset.Value + delta;
          offset = Math.Max(0, Math.Min(paletteData.Length - Math.Abs(delta), offset));
-         splitOffsetText.Text = String.Format("{0:X}", offset);
+         numericSplitOffset.Value = offset;
       }
 
       private void splitMinusButton_Click(object sender, EventArgs e)
       {
-         int delta = hexToInt(splitLengthText.Text);
+         int delta = (int)numericSplitLength.Value;
          offsetSplit(-delta);
       }
 
       private void splitPlusButton_Click(object sender, EventArgs e)
       {
-         int delta = hexToInt(splitLengthText.Text);
+         int delta = (int)numericSplitLength.Value;
          offsetSplit(delta);
       }
 
@@ -379,6 +364,9 @@ namespace Texture64
             if (tmpData != null)
             {
                paletteData = tmpData;
+               numericPalette.Enabled = true;
+               numericPalette.Maximum = paletteData.Length;
+               numericSplitOffset.Maximum = paletteData.Length;
                separatePalette = true;
                UpdatePalette();
                paletteFileLabel.Text = Path.GetFileName(ofd.FileName);
@@ -386,49 +374,129 @@ namespace Texture64
          }
       }
 
-      private void advanceFile(int direction)
+      private void advanceOffset(GraphicsViewer gv, int direction, int advancePixels)
       {
-         if (fileListView.Items.Count > 0)
+         if (romData != null)
          {
-            if (fileListView.SelectedIndices.Count > 0)
+            int offsetSize;
+            if (advancePixels == 0)
             {
-               int idx = fileListView.SelectedIndices[0];
-               fileListView.Items[idx].Selected = false;
-               idx += direction;
-               if (idx < 0)
-               {
-                  idx += fileListView.Items.Count;
-               }
-               if (idx >= fileListView.Items.Count)
-               {
-                  idx -= fileListView.Items.Count;
-               }
-               fileListView.Items[idx].Selected = true;
+               offsetSize = N64Graphics.PixelsToBytes(gv.Codec, gv.PixWidth * gv.PixHeight);
             }
             else
             {
-               fileListView.Items[0].Selected = true;
+               offsetSize = N64Graphics.PixelsToBytes(gv.Codec, advancePixels);
+            }
+            int change = direction * offsetSize;
+            int newOffset = Math.Max(0, Math.Min(romData.Length - change, offset + change));
+            numericOffset.Value = newOffset;
+         }
+      }
+
+      private void advancePaletteOffset(GraphicsViewer gv, int direction, int advancePixels)
+      {
+         if (paletteData != null)
+         {
+            int offsetSize;
+            if (advancePixels == 0)
+            {
+               offsetSize = N64Graphics.PixelsToBytes(gv.Codec, gv.PixWidth * gv.PixHeight);
+            }
+            else
+            {
+               offsetSize = N64Graphics.PixelsToBytes(gv.Codec, advancePixels);
+            }
+            int palOffset = (int)numericPalette.Value;
+            int change = direction * offsetSize;
+            int newOffset = Math.Max(0, Math.Min(paletteData.Length - change, palOffset + change));
+            numericPalette.Value = newOffset;
+         }
+      }
+
+      private void exportTexture(GraphicsViewer gv)
+      {
+         SaveFileDialog sfd = new SaveFileDialog();
+         sfd.Filter = "PNG Image|*.png|JPEG Image|*.jpg|Bitmap Image|*.bmp";
+         sfd.Title = "Save as Image File";
+         sfd.FileName = String.Format("{0}.{1:X05}.{2}.png", basename, offset, N64Graphics.CodecString(gv.Codec));
+         DialogResult dResult = sfd.ShowDialog();
+
+         if (dResult == DialogResult.OK)
+         {
+            Bitmap bitmap = new Bitmap(gv.PixWidth, gv.PixHeight, PixelFormat.Format32bppArgb);
+            Graphics g = Graphics.FromImage(bitmap);
+            N64Graphics.RenderTexture(g, romData, curPalette, offset, gv.PixWidth, gv.GetPixelHeight(), 1, gv.Codec);
+            switch (sfd.FilterIndex)
+            {
+               case 1: bitmap.Save(sfd.FileName, ImageFormat.Png); break;
+               case 2: bitmap.Save(sfd.FileName, ImageFormat.Jpeg); break;
+               case 3: bitmap.Save(sfd.FileName, ImageFormat.Bmp); break;
             }
          }
       }
 
-      private void prevFileButton_Click(object sender, EventArgs e)
+      private void graphicsViewer_MouseClick(object sender, MouseEventArgs e)
       {
-         advanceFile(-1);
-      }
-
-      private void nextFileButton_Click(object sender, EventArgs e)
-      {
-         advanceFile(1);
-      }
-
-      private void fileListView_SelectedIndexChanged(object sender, EventArgs e)
-      {
-         if (fileListView.SelectedItems.Count > 0)
+         GraphicsViewer gv = (GraphicsViewer)sender;
+         switch (e.Button)
          {
-            string filePath = (string)fileListView.SelectedItems[0].Tag;
-            readData(filePath);
+            case System.Windows.Forms.MouseButtons.Left:
+               int direction = 1;
+               int pixelAmount = 0;
+               if ((Control.ModifierKeys & Keys.Control) == Keys.Control)
+               {
+                  direction = -1;
+               }
+               if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift)
+               {
+                  pixelAmount = 1;
+               }
+               advanceOffset(gv, direction, pixelAmount);
+               break;
+            case System.Windows.Forms.MouseButtons.Right:
+               exportTexture(gv);
+               break;
          }
       }
+
+      private void gviewPalette_MouseClick(object sender, MouseEventArgs e)
+      {
+         GraphicsViewer gv = (GraphicsViewer)sender;
+         switch (e.Button)
+         {
+            case System.Windows.Forms.MouseButtons.Left:
+               int direction = 1;
+               int pixelAmount = 0;
+               if ((Control.ModifierKeys & Keys.Control) == Keys.Control)
+               {
+                  direction = -1;
+               }
+               if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift)
+               {
+                  pixelAmount = 1;
+               }
+               advancePaletteOffset(gv, direction, pixelAmount);
+               break;
+            case System.Windows.Forms.MouseButtons.Right:
+               exportTexture(gv);
+               break;
+         }
+      }
+
+      private void insertImageFile(string imageFile)
+      {
+         Bitmap bm = new Bitmap(imageFile);
+         byte[] imageData = null, paletteData = null;
+         N64Graphics.Convert(ref imageData, ref paletteData, viewerCodec, bm);
+         for (int i = 0; i < imageData.Length; i++)
+         {
+            romData[offset + i] = imageData[i];
+         }
+         foreach (GraphicsViewer gv in viewers)
+         {
+            gv.Invalidate();
+         }
+      }
+
    }
 }
