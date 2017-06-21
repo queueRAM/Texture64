@@ -35,6 +35,8 @@ namespace Texture64
          viewers.Add(graphicsViewer64x64);
          viewers.Add(graphicsViewerCustom);
 
+         this.MouseWheel += new MouseEventHandler(this.graphicsViewer_MouseWheel);
+
          gviewPalette.Codec = N64Codec.RGBA16;
 
          toolStripCodec.SelectedIndex = 0;
@@ -381,7 +383,7 @@ namespace Texture64
             int offsetSize;
             if (advancePixels == 0)
             {
-               offsetSize = N64Graphics.PixelsToBytes(gv.Codec, gv.PixWidth * gv.PixHeight);
+               offsetSize = N64Graphics.PixelsToBytes(gv.Codec, gv.GetPixelWidth() * gv.GetPixelHeight());
             }
             else
             {
@@ -435,7 +437,7 @@ namespace Texture64
          }
       }
 
-      private void graphicsViewer_MouseClick(object sender, MouseEventArgs e)
+      private void graphicsViewer_MouseDown(object sender, MouseEventArgs e)
       {
          GraphicsViewer gv = (GraphicsViewer)sender;
          switch (e.Button)
@@ -459,7 +461,30 @@ namespace Texture64
          }
       }
 
-      private void gviewPalette_MouseClick(object sender, MouseEventArgs e)
+      private GraphicsViewer hoverGV = null;
+
+      private void graphicsViewer_MouseEnter(object sender, EventArgs e)
+      {
+         hoverGV = (GraphicsViewer)sender;
+      }
+
+      private void graphicsViewer_MouseLeave(object sender, EventArgs e)
+      {
+         hoverGV = null;
+      }
+
+      // this event is actually called for the entire Form and uses the hover state to determine how much to scroll
+      private void graphicsViewer_MouseWheel(object sender, MouseEventArgs e)
+      {
+         if (hoverGV != null)
+         {
+            int direction = -Math.Sign(e.Delta);
+            int pixelAmount = 4 * hoverGV.GetPixelWidth();
+            advanceOffset(hoverGV, direction, pixelAmount);
+         }
+      }
+
+      private void gviewPalette_MouseDown(object sender, MouseEventArgs e)
       {
          GraphicsViewer gv = (GraphicsViewer)sender;
          switch (e.Button)

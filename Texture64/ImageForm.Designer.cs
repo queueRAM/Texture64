@@ -51,6 +51,9 @@
          this.numericUpDownHeight = new System.Windows.Forms.NumericUpDown();
          this.colorDialogBg = new System.Windows.Forms.ColorDialog();
          this.groupBoxPalette = new System.Windows.Forms.GroupBox();
+         this.label15 = new System.Windows.Forms.Label();
+         this.numericSplitOffset = new System.Windows.Forms.NumericUpDown();
+         this.numericSplitLength = new System.Windows.Forms.NumericUpDown();
          this.numericPalette = new System.Windows.Forms.NumericUpDown();
          this.paletteFileLabel = new System.Windows.Forms.Label();
          this.loadPaletteButton = new System.Windows.Forms.Button();
@@ -72,10 +75,7 @@
          this.label14 = new System.Windows.Forms.Label();
          this.numericOffset = new System.Windows.Forms.NumericUpDown();
          this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
-         this.numericSplitLength = new System.Windows.Forms.NumericUpDown();
-         this.numericSplitOffset = new System.Windows.Forms.NumericUpDown();
          this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-         this.label15 = new System.Windows.Forms.Label();
          this.graphicsViewer8x16 = new Texture64.GraphicsViewer();
          this.graphicsViewer16x32 = new Texture64.GraphicsViewer();
          this.graphicsViewer64x32 = new Texture64.GraphicsViewer();
@@ -92,11 +92,11 @@
          ((System.ComponentModel.ISupportInitialize)(this.numericUpDownWidth)).BeginInit();
          ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHeight)).BeginInit();
          this.groupBoxPalette.SuspendLayout();
+         ((System.ComponentModel.ISupportInitialize)(this.numericSplitOffset)).BeginInit();
+         ((System.ComponentModel.ISupportInitialize)(this.numericSplitLength)).BeginInit();
          ((System.ComponentModel.ISupportInitialize)(this.numericPalette)).BeginInit();
          ((System.ComponentModel.ISupportInitialize)(this.numericOffset)).BeginInit();
          ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
-         ((System.ComponentModel.ISupportInitialize)(this.numericSplitLength)).BeginInit();
-         ((System.ComponentModel.ISupportInitialize)(this.numericSplitOffset)).BeginInit();
          this.SuspendLayout();
          // 
          // statusStrip1
@@ -326,6 +326,51 @@
          this.groupBoxPalette.TabStop = false;
          this.groupBoxPalette.Text = "CI Palette";
          // 
+         // label15
+         // 
+         this.label15.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+         this.label15.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+         this.label15.Location = new System.Drawing.Point(3, 270);
+         this.label15.Name = "label15";
+         this.label15.Size = new System.Drawing.Size(138, 2);
+         this.label15.TabIndex = 38;
+         // 
+         // numericSplitOffset
+         // 
+         this.numericSplitOffset.Enabled = false;
+         this.numericSplitOffset.Hexadecimal = true;
+         this.numericSplitOffset.Location = new System.Drawing.Point(61, 218);
+         this.numericSplitOffset.Maximum = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+         this.numericSplitOffset.Name = "numericSplitOffset";
+         this.numericSplitOffset.Size = new System.Drawing.Size(73, 20);
+         this.numericSplitOffset.TabIndex = 37;
+         this.numericSplitOffset.ValueChanged += new System.EventHandler(this.numericSplitOffset_ValueChanged);
+         // 
+         // numericSplitLength
+         // 
+         this.numericSplitLength.Enabled = false;
+         this.numericSplitLength.Hexadecimal = true;
+         this.numericSplitLength.Location = new System.Drawing.Point(60, 196);
+         this.numericSplitLength.Maximum = new decimal(new int[] {
+            512,
+            0,
+            0,
+            0});
+         this.numericSplitLength.Name = "numericSplitLength";
+         this.numericSplitLength.Size = new System.Drawing.Size(73, 20);
+         this.numericSplitLength.TabIndex = 36;
+         this.numericSplitLength.Value = new decimal(new int[] {
+            128,
+            0,
+            0,
+            0});
+         this.numericSplitLength.ValueChanged += new System.EventHandler(this.numericSplitLength_ValueChanged);
+         // 
          // numericPalette
          // 
          this.numericPalette.Enabled = false;
@@ -534,51 +579,6 @@
          this.numericOffset.TabIndex = 34;
          this.numericOffset.ValueChanged += new System.EventHandler(this.numericOffset_ValueChanged);
          // 
-         // numericSplitLength
-         // 
-         this.numericSplitLength.Enabled = false;
-         this.numericSplitLength.Hexadecimal = true;
-         this.numericSplitLength.Location = new System.Drawing.Point(60, 196);
-         this.numericSplitLength.Maximum = new decimal(new int[] {
-            512,
-            0,
-            0,
-            0});
-         this.numericSplitLength.Name = "numericSplitLength";
-         this.numericSplitLength.Size = new System.Drawing.Size(73, 20);
-         this.numericSplitLength.TabIndex = 36;
-         this.numericSplitLength.Value = new decimal(new int[] {
-            128,
-            0,
-            0,
-            0});
-         this.numericSplitLength.ValueChanged += new System.EventHandler(this.numericSplitLength_ValueChanged);
-         // 
-         // numericSplitOffset
-         // 
-         this.numericSplitOffset.Enabled = false;
-         this.numericSplitOffset.Hexadecimal = true;
-         this.numericSplitOffset.Location = new System.Drawing.Point(61, 218);
-         this.numericSplitOffset.Maximum = new decimal(new int[] {
-            0,
-            0,
-            0,
-            0});
-         this.numericSplitOffset.Name = "numericSplitOffset";
-         this.numericSplitOffset.Size = new System.Drawing.Size(73, 20);
-         this.numericSplitOffset.TabIndex = 37;
-         this.numericSplitOffset.ValueChanged += new System.EventHandler(this.numericSplitOffset_ValueChanged);
-         // 
-         // label15
-         // 
-         this.label15.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-         this.label15.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-         this.label15.Location = new System.Drawing.Point(3, 270);
-         this.label15.Name = "label15";
-         this.label15.Size = new System.Drawing.Size(138, 2);
-         this.label15.TabIndex = 38;
-         // 
          // graphicsViewer8x16
          // 
          this.graphicsViewer8x16.Codec = Texture64.N64Codec.RGBA16;
@@ -589,7 +589,9 @@
          this.graphicsViewer8x16.PixWidth = 8;
          this.graphicsViewer8x16.Size = new System.Drawing.Size(16, 32);
          this.graphicsViewer8x16.TabIndex = 32;
-         this.graphicsViewer8x16.MouseClick += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseClick);
+         this.graphicsViewer8x16.MouseDown += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseDown);
+         this.graphicsViewer8x16.MouseEnter += new System.EventHandler(this.graphicsViewer_MouseEnter);
+         this.graphicsViewer8x16.MouseLeave += new System.EventHandler(this.graphicsViewer_MouseLeave);
          // 
          // graphicsViewer16x32
          // 
@@ -601,7 +603,9 @@
          this.graphicsViewer16x32.PixWidth = 16;
          this.graphicsViewer16x32.Size = new System.Drawing.Size(32, 64);
          this.graphicsViewer16x32.TabIndex = 27;
-         this.graphicsViewer16x32.MouseClick += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseClick);
+         this.graphicsViewer16x32.MouseDown += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseDown);
+         this.graphicsViewer16x32.MouseEnter += new System.EventHandler(this.graphicsViewer_MouseEnter);
+         this.graphicsViewer16x32.MouseLeave += new System.EventHandler(this.graphicsViewer_MouseLeave);
          // 
          // graphicsViewer64x32
          // 
@@ -613,7 +617,9 @@
          this.graphicsViewer64x32.PixWidth = 64;
          this.graphicsViewer64x32.Size = new System.Drawing.Size(128, 64);
          this.graphicsViewer64x32.TabIndex = 25;
-         this.graphicsViewer64x32.MouseClick += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseClick);
+         this.graphicsViewer64x32.MouseDown += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseDown);
+         this.graphicsViewer64x32.MouseEnter += new System.EventHandler(this.graphicsViewer_MouseEnter);
+         this.graphicsViewer64x32.MouseLeave += new System.EventHandler(this.graphicsViewer_MouseLeave);
          // 
          // graphicsViewer32x64
          // 
@@ -625,7 +631,9 @@
          this.graphicsViewer32x64.PixWidth = 32;
          this.graphicsViewer32x64.Size = new System.Drawing.Size(64, 128);
          this.graphicsViewer32x64.TabIndex = 24;
-         this.graphicsViewer32x64.MouseClick += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseClick);
+         this.graphicsViewer32x64.MouseDown += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseDown);
+         this.graphicsViewer32x64.MouseEnter += new System.EventHandler(this.graphicsViewer_MouseEnter);
+         this.graphicsViewer32x64.MouseLeave += new System.EventHandler(this.graphicsViewer_MouseLeave);
          // 
          // gviewPalette
          // 
@@ -637,13 +645,10 @@
          this.gviewPalette.PixWidth = 16;
          this.gviewPalette.Size = new System.Drawing.Size(128, 128);
          this.gviewPalette.TabIndex = 0;
-         this.gviewPalette.MouseClick += new System.Windows.Forms.MouseEventHandler(this.gviewPalette_MouseClick);
+         this.gviewPalette.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gviewPalette_MouseDown);
          // 
          // graphicsViewerCustom
          // 
-         this.graphicsViewerCustom.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
          this.graphicsViewerCustom.Codec = Texture64.N64Codec.RGBA16;
          this.graphicsViewerCustom.Location = new System.Drawing.Point(154, 286);
          this.graphicsViewerCustom.Name = "graphicsViewerCustom";
@@ -652,7 +657,9 @@
          this.graphicsViewerCustom.PixWidth = 128;
          this.graphicsViewerCustom.Size = new System.Drawing.Size(256, 256);
          this.graphicsViewerCustom.TabIndex = 9;
-         this.graphicsViewerCustom.MouseClick += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseClick);
+         this.graphicsViewerCustom.MouseDown += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseDown);
+         this.graphicsViewerCustom.MouseEnter += new System.EventHandler(this.graphicsViewer_MouseEnter);
+         this.graphicsViewerCustom.MouseLeave += new System.EventHandler(this.graphicsViewer_MouseLeave);
          // 
          // graphicsViewerMap
          // 
@@ -661,12 +668,14 @@
          this.graphicsViewerMap.Codec = Texture64.N64Codec.RGBA16;
          this.graphicsViewerMap.Location = new System.Drawing.Point(20, 55);
          this.graphicsViewerMap.Name = "graphicsViewerMap";
-         this.graphicsViewerMap.PixHeight = 0;
+         this.graphicsViewerMap.PixHeight = 243;
          this.graphicsViewerMap.PixScale = 2;
          this.graphicsViewerMap.PixWidth = 64;
          this.graphicsViewerMap.Size = new System.Drawing.Size(128, 487);
          this.graphicsViewerMap.TabIndex = 7;
-         this.graphicsViewerMap.MouseClick += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseClick);
+         this.graphicsViewerMap.MouseDown += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseDown);
+         this.graphicsViewerMap.MouseEnter += new System.EventHandler(this.graphicsViewer_MouseEnter);
+         this.graphicsViewerMap.MouseLeave += new System.EventHandler(this.graphicsViewer_MouseLeave);
          // 
          // graphicsViewer8x8
          // 
@@ -678,7 +687,9 @@
          this.graphicsViewer8x8.PixWidth = 8;
          this.graphicsViewer8x8.Size = new System.Drawing.Size(16, 16);
          this.graphicsViewer8x8.TabIndex = 6;
-         this.graphicsViewer8x8.MouseClick += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseClick);
+         this.graphicsViewer8x8.MouseDown += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseDown);
+         this.graphicsViewer8x8.MouseEnter += new System.EventHandler(this.graphicsViewer_MouseEnter);
+         this.graphicsViewer8x8.MouseLeave += new System.EventHandler(this.graphicsViewer_MouseLeave);
          // 
          // graphicsViewer16x16
          // 
@@ -690,7 +701,9 @@
          this.graphicsViewer16x16.PixWidth = 16;
          this.graphicsViewer16x16.Size = new System.Drawing.Size(32, 32);
          this.graphicsViewer16x16.TabIndex = 5;
-         this.graphicsViewer16x16.MouseClick += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseClick);
+         this.graphicsViewer16x16.MouseDown += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseDown);
+         this.graphicsViewer16x16.MouseEnter += new System.EventHandler(this.graphicsViewer_MouseEnter);
+         this.graphicsViewer16x16.MouseLeave += new System.EventHandler(this.graphicsViewer_MouseLeave);
          // 
          // graphicsViewer32x32
          // 
@@ -702,7 +715,9 @@
          this.graphicsViewer32x32.PixWidth = 32;
          this.graphicsViewer32x32.Size = new System.Drawing.Size(64, 64);
          this.graphicsViewer32x32.TabIndex = 4;
-         this.graphicsViewer32x32.MouseClick += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseClick);
+         this.graphicsViewer32x32.MouseDown += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseDown);
+         this.graphicsViewer32x32.MouseEnter += new System.EventHandler(this.graphicsViewer_MouseEnter);
+         this.graphicsViewer32x32.MouseLeave += new System.EventHandler(this.graphicsViewer_MouseLeave);
          // 
          // graphicsViewer64x64
          // 
@@ -714,7 +729,9 @@
          this.graphicsViewer64x64.PixWidth = 64;
          this.graphicsViewer64x64.Size = new System.Drawing.Size(128, 128);
          this.graphicsViewer64x64.TabIndex = 3;
-         this.graphicsViewer64x64.MouseClick += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseClick);
+         this.graphicsViewer64x64.MouseDown += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseDown);
+         this.graphicsViewer64x64.MouseEnter += new System.EventHandler(this.graphicsViewer_MouseEnter);
+         this.graphicsViewer64x64.MouseLeave += new System.EventHandler(this.graphicsViewer_MouseLeave);
          // 
          // ImageForm
          // 
@@ -763,11 +780,11 @@
          ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHeight)).EndInit();
          this.groupBoxPalette.ResumeLayout(false);
          this.groupBoxPalette.PerformLayout();
+         ((System.ComponentModel.ISupportInitialize)(this.numericSplitOffset)).EndInit();
+         ((System.ComponentModel.ISupportInitialize)(this.numericSplitLength)).EndInit();
          ((System.ComponentModel.ISupportInitialize)(this.numericPalette)).EndInit();
          ((System.ComponentModel.ISupportInitialize)(this.numericOffset)).EndInit();
          ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
-         ((System.ComponentModel.ISupportInitialize)(this.numericSplitLength)).EndInit();
-         ((System.ComponentModel.ISupportInitialize)(this.numericSplitOffset)).EndInit();
          this.ResumeLayout(false);
          this.PerformLayout();
 

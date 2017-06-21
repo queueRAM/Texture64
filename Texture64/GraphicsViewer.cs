@@ -9,18 +9,17 @@ namespace Texture64
       private byte[] palette;
       private int offset;
 
-      public int PixWidth { get; set; }
-      public int PixHeight { get; set; }
-      public int PixScale { get; set; }
+      private int myPixScale = 2;
+
+      public int PixWidth { get { return Width / myPixScale; } set { this.Width = value * PixScale; } }
+      public int PixHeight { get { return Height / myPixScale; } set { this.Height = value * PixScale; } }
+      public int PixScale { get { return myPixScale; } set { myPixScale = value; this.Width = myPixScale * PixWidth; this.Height = myPixScale * PixHeight; } }
       public N64Codec Codec { get; set; }
 
       public GraphicsViewer()
       {
          InitializeComponent();
          DoubleBuffered = true;
-         PixHeight = 0;
-         PixWidth = 0;
-         PixScale = 2;
       }
 
       public void SetData(byte[] rawData)
