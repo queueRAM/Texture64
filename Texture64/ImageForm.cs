@@ -43,6 +43,13 @@ namespace Texture64
 
          // bind the value of the scrollbar to the value of the offset box
          numericOffset.DataBindings.Add("Value", vScrollBarOffset, "Value", false, DataSourceUpdateMode.OnPropertyChanged);
+
+         // handle arguments passed in the command line
+         string[] args = Environment.GetCommandLineArgs();
+         if (args.Length > 1)
+         {
+            readData(args[1]);
+         }
       }
 
       private static bool SaveBinFile(string filePath, byte[] data, int start, int end)
