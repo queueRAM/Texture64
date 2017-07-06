@@ -30,6 +30,12 @@ N64 texture ripper and editor
 
 ### Changelog ###
 
+0.0.2: Beta test 2 release
+* improve responsiveness of click events
+* add mouse wheel support for scrolling up/down rows
+* allow input binary to be passed on command line
+* add Scale option in toolbar
+
 0.0.1: Beta test release
 * supports RGBA16, RGBA32, IA16, IA8, IA4, I8, I4, CI8, CI4, 1bpp
 * right-click export, insert to import
