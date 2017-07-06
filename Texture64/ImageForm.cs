@@ -40,6 +40,7 @@ namespace Texture64
          gviewPalette.Codec = N64Codec.RGBA16;
 
          toolStripCodec.SelectedIndex = 0;
+         toolStripScale.SelectedIndex = 1;
 
          // bind the value of the scrollbar to the value of the offset box
          numericOffset.DataBindings.Add("Value", vScrollBarOffset, "Value", false, DataSourceUpdateMode.OnPropertyChanged);
@@ -214,6 +215,21 @@ namespace Texture64
                   break;
             }
             gviewPalette.Invalidate();
+         }
+      }
+
+      private void toolStripScale_SelectedIndexChanged(object sender, EventArgs e)
+      {
+         foreach (GraphicsViewer gv in viewers)
+         {
+            if (gv != graphicsViewerMap)
+            {
+               int pixScale = (1 + toolStripScale.SelectedIndex);
+               // TODO: GraphicsViewer should resize itself when pixScale is changed, but it doesn't work for some reason
+               gv.Size = new System.Drawing.Size(pixScale * gv.PixWidth, pixScale * gv.PixHeight);
+               gv.PixScale = pixScale;
+               gv.Invalidate();
+            }
          }
       }
 
