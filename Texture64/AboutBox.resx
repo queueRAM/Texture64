@@ -144,6 +144,16 @@
         11WYgDw1n8ZP9/sHaa9Rln66hJYAAAAASUVORK5CYII=
 </value>
   </data>
+  <data name="textBox1.Text" xml:space="preserve">
+    <value>Usage:
+ • Right-click image to extract to image file (.png, .jpg, .bmp)
+ • Left-click to advance offset by the entire image
+    • Hold Ctrl modifier to reverse by entire image
+    • Hold Shift modifier to advance/reverse by one pixel (varies by format)
+ • Mouse wheel to scroll up/down by rows of image
+ • Click "Insert..." to import image in place at current offset (does not overwrite file)
+ • Click "Save" to overwrite opened file</value>
+  </data>
   <metadata name="timerAnimate.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>

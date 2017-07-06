@@ -24,6 +24,7 @@ N64 texture ripper and editor
 * Left-click to advance offset by the entire image
    * Hold Ctrl modifier to reverse by entire image
    * Hold Shift modifier to advance/reverse by one pixel (varies by format)
+* Mouse wheel to scroll up/down by rows of image
 * Click "Insert..." to import image in place at current offset (does not overwrite file)
 * Click "Save" to overwrite opened file
 

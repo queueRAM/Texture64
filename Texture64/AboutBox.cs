@@ -26,7 +26,7 @@ namespace Texture64
          this.labelProductName.Text = AssemblyProduct;
          this.labelVersion.Text = String.Format("Version {0}", AssemblyVersion);
          this.labelCopyright.Text = AssemblyCopyright;
-         this.textBoxDescription.Text = AssemblyDescription;
+         this.labelDescription.Text = AssemblyDescription;
       }
 
       #region Assembly Attribute Accessors
