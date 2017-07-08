@@ -144,8 +144,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="flower.ico" />
+    <None Include="Resources\palette-before.png" />
+    <None Include="Resources\palette-after.png" />
+    <None Include="Resources\image-export.png" />
     <None Include="Resources\disk_black.png" />
-    <None Include="Resources\disk.png" />
     <None Include="Resources\flower_3.png" />
     <None Include="Resources\flower_2.png" />
     <None Include="Resources\flower_1.png" />

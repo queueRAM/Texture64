@@ -73,16 +73,6 @@ namespace Texture64.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap disk {
-            get {
-                object obj = ResourceManager.GetObject("disk", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap disk_black {
             get {
                 object obj = ResourceManager.GetObject("disk_black", resourceCulture);
@@ -143,6 +133,16 @@ namespace Texture64.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap image_export {
+            get {
+                object obj = ResourceManager.GetObject("image_export", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap image_import {
             get {
                 object obj = ResourceManager.GetObject("image_import", resourceCulture);
@@ -156,6 +156,26 @@ namespace Texture64.Properties {
         internal static System.Drawing.Bitmap minus {
             get {
                 object obj = ResourceManager.GetObject("minus", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap palette_after {
+            get {
+                object obj = ResourceManager.GetObject("palette_after", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap palette_before {
+            get {
+                object obj = ResourceManager.GetObject("palette_before", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

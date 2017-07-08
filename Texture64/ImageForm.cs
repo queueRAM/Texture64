@@ -418,24 +418,29 @@ namespace Texture64
          }
       }
 
-      private void advancePaletteOffset(GraphicsViewer gv, int direction, int advancePixels)
+      private void setPaletteOffset(int palOffset)
       {
          if (paletteData != null)
          {
-            int offsetSize;
-            if (advancePixels == 0)
-            {
-               offsetSize = N64Graphics.PixelsToBytes(gv.Codec, gv.PixWidth * gv.PixHeight);
-            }
-            else
-            {
-               offsetSize = N64Graphics.PixelsToBytes(gv.Codec, advancePixels);
-            }
-            int palOffset = (int)numericPalette.Value;
-            int change = direction * offsetSize;
-            int newOffset = Math.Max(0, Math.Min(paletteData.Length - 1, palOffset + change));
+            int newOffset = Math.Max(0, Math.Min(paletteData.Length - 1, palOffset));
             numericPalette.Value = newOffset;
          }
+      }
+
+      private void advancePaletteOffset(GraphicsViewer gv, int direction, int advancePixels)
+      {
+         int offsetSize;
+         if (advancePixels == 0)
+         {
+            offsetSize = N64Graphics.PixelsToBytes(gv.Codec, gv.PixWidth * gv.PixHeight);
+         }
+         else
+         {
+            offsetSize = N64Graphics.PixelsToBytes(gv.Codec, advancePixels);
+         }
+         int palOffset = (int)numericPalette.Value;
+         int change = direction * offsetSize;
+         setPaletteOffset(palOffset + change);
       }
 
       private void exportTexture(GraphicsViewer gv)
@@ -460,7 +465,24 @@ namespace Texture64
          }
       }
 
-      private void graphicsViewer_MouseDown(object sender, MouseEventArgs e)
+      GraphicsViewer rightClickGv = null;
+
+      private void graphicsViewerMap_MouseUp(object sender, MouseEventArgs e)
+      {
+         GraphicsViewer gv = (GraphicsViewer)sender;
+         switch (e.Button)
+         {
+            case System.Windows.Forms.MouseButtons.Left:
+               int pixelAmount = (e.X + e.Y * gv.Width) / gv.PixScale;
+               advanceOffset(gv, 1, pixelAmount);
+               break;
+            case System.Windows.Forms.MouseButtons.Right:
+               rightClickGv = gv;
+               break;
+         }
+      }
+
+      private void graphicsViewer_MouseUp(object sender, MouseEventArgs e)
       {
          GraphicsViewer gv = (GraphicsViewer)sender;
          switch (e.Button)
@@ -479,7 +501,7 @@ namespace Texture64
                advanceOffset(gv, direction, pixelAmount);
                break;
             case System.Windows.Forms.MouseButtons.Right:
-               exportTexture(gv);
+               rightClickGv = gv;
                break;
          }
       }
@@ -507,7 +529,7 @@ namespace Texture64
          }
       }
 
-      private void gviewPalette_MouseDown(object sender, MouseEventArgs e)
+      private void gviewPalette_MouseUp(object sender, MouseEventArgs e)
       {
          GraphicsViewer gv = (GraphicsViewer)sender;
          switch (e.Button)
@@ -526,7 +548,7 @@ namespace Texture64
                advancePaletteOffset(gv, direction, pixelAmount);
                break;
             case System.Windows.Forms.MouseButtons.Right:
-               exportTexture(gv);
+               rightClickGv = gv;
                break;
          }
       }
@@ -544,6 +566,26 @@ namespace Texture64
          {
             gv.Invalidate();
          }
+      }
+
+      private void gvExport_Click(object sender, EventArgs e)
+      {
+         if (rightClickGv != null)
+         {
+            exportTexture(rightClickGv);
+         }
+      }
+
+      private void gvSetPaletteBefore_Click(object sender, EventArgs e)
+      {
+         int paletteBytes = N64Graphics.PixelsToBytes(gviewPalette.Codec, gviewPalette.PixWidth * gviewPalette.PixHeight);
+         setPaletteOffset(offset - paletteBytes);
+      }
+
+      private void gvSetPaletteAfter_Click(object sender, EventArgs e)
+      {
+         int paletteBytes = N64Graphics.PixelsToBytes(rightClickGv.Codec, rightClickGv.PixWidth * rightClickGv.PixHeight);
+         setPaletteOffset(offset + paletteBytes);
       }
 
    }
