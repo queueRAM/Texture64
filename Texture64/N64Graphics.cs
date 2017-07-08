@@ -160,6 +160,48 @@ namespace Texture64
          return "unk";
       }
 
+      public static Color MakeColor(byte[] data, byte[] palette, int offset, int select, N64Codec codec)
+      {
+         Color color;
+         switch (codec)
+         {
+            case N64Codec.RGBA16:
+               color = RGBA16Color(data, offset);
+               break;
+            case N64Codec.RGBA32:
+               color = RGBA32Color(data, offset);
+               break;
+            case N64Codec.IA16:
+               color = IA16Color(data, offset);
+               break;
+            case N64Codec.IA8:
+               color = IA8Color(data, offset);
+               break;
+            case N64Codec.IA4:
+               color = IA4Color(data, offset, select);
+               break;
+            case N64Codec.I8:
+               color = I8Color(data, offset);
+               break;
+            case N64Codec.I4:
+               color = I4Color(data, offset, select);
+               break;
+            case N64Codec.CI8:
+               color = CI8Color(data, palette, offset);
+               break;
+            case N64Codec.CI4:
+               color = CI4Color(data, palette, offset, select);
+               break;
+            case N64Codec.ONEBPP:
+               color = BPPColor(data, offset, select);
+               break;
+            default:
+               color = RGBA16Color(data, offset);
+               break;
+         }
+         return color;
+      }
+
       public static void RenderTexture(Graphics g, byte[] data, byte[] palette, int offset, int width, int height, int scale, N64Codec codec)
       {
          Brush brush;
@@ -195,42 +237,7 @@ namespace Texture64
                pixOffset += offset;
                if (data.Length > pixOffset + bytesPerPix - 1)
                {
-                  switch (codec)
-                  {
-                     case N64Codec.RGBA16:
-                        brush = new SolidBrush(RGBA16Color(data, pixOffset));
-                        break;
-                     case N64Codec.RGBA32:
-                        brush = new SolidBrush(RGBA32Color(data, pixOffset));
-                        break;
-                     case N64Codec.IA16:
-                        brush = new SolidBrush(IA16Color(data, pixOffset));
-                        break;
-                     case N64Codec.IA8:
-                        brush = new SolidBrush(IA8Color(data, pixOffset));
-                        break;
-                     case N64Codec.IA4:
-                        brush = new SolidBrush(IA4Color(data, pixOffset, select));
-                        break;
-                     case N64Codec.I8:
-                        brush = new SolidBrush(I8Color(data, pixOffset));
-                        break;
-                     case N64Codec.I4:
-                        brush = new SolidBrush(I4Color(data, pixOffset, select));
-                        break;
-                     case N64Codec.CI8:
-                        brush = new SolidBrush(CI8Color(data, palette, pixOffset));
-                        break;
-                     case N64Codec.CI4:
-                        brush = new SolidBrush(CI4Color(data, palette, pixOffset, select));
-                        break;
-                     case N64Codec.ONEBPP:
-                        brush = new SolidBrush(BPPColor(data, pixOffset, select));
-                        break;
-                     default:
-                        brush = new SolidBrush(RGBA16Color(data, pixOffset));
-                        break;
-                  }
+                  brush = new SolidBrush(MakeColor(data, palette, pixOffset, select, codec));
                   g.FillRectangle(brush, w * scale, h * scale, scale, scale);
                }
             }

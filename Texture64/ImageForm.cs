@@ -21,6 +21,12 @@ namespace Texture64
       private string lastFilename;
       private List<GraphicsViewer> viewers = new List<GraphicsViewer>();
 
+      // graphics viewer that is being hovered over for mouse wheel hooking
+      private GraphicsViewer hoverGV = null;
+
+      // graphics viewer that was right-clicked to bring up context menu
+      private GraphicsViewer rightClickGV = null;
+
       public ImageForm()
       {
          InitializeComponent();
@@ -99,9 +105,8 @@ namespace Texture64
             gv.Invalidate();
          }
          UpdatePalette();
-         statusStripFile.Text = filePath;
+         statusStripFile.Text = String.Format("{0} [0x{1:X}]", filePath, romData.Length);
          statusStripFile.ForeColor = Color.Black;
-         statusStripLength.Text = String.Format("0x{0:X}", romData.Length);
          numericOffset.Enabled = true;
          vScrollBarOffset.Enabled = true;
       }
@@ -465,8 +470,6 @@ namespace Texture64
          }
       }
 
-      GraphicsViewer rightClickGv = null;
-
       private void graphicsViewerMap_MouseUp(object sender, MouseEventArgs e)
       {
          GraphicsViewer gv = (GraphicsViewer)sender;
@@ -477,7 +480,7 @@ namespace Texture64
                advanceOffset(gv, 1, pixelAmount);
                break;
             case System.Windows.Forms.MouseButtons.Right:
-               rightClickGv = gv;
+               rightClickGV = gv;
                break;
          }
       }
@@ -501,12 +504,10 @@ namespace Texture64
                advanceOffset(gv, direction, pixelAmount);
                break;
             case System.Windows.Forms.MouseButtons.Right:
-               rightClickGv = gv;
+               rightClickGV = gv;
                break;
          }
       }
-
-      private GraphicsViewer hoverGV = null;
 
       private void graphicsViewer_MouseEnter(object sender, EventArgs e)
       {
@@ -516,6 +517,90 @@ namespace Texture64
       private void graphicsViewer_MouseLeave(object sender, EventArgs e)
       {
          hoverGV = null;
+      }
+
+      private void graphicsViewer_MouseMove(object sender, MouseEventArgs e)
+      {
+         if (romData != null)
+         {
+            GraphicsViewer gv = (GraphicsViewer)sender;
+            int pixOffset = (e.Y / gv.PixScale) * gv.GetPixelWidth() + e.X / gv.PixScale;
+            int byteOffset = N64Graphics.PixelsToBytes(gv.Codec, pixOffset);
+            int nibblesPerPix = 1;
+            int select = 0;
+            int selectBits = 0;
+            switch (gv.Codec)
+            {
+               case N64Codec.RGBA32:
+                  nibblesPerPix = 8;
+                  pixOffset *= nibblesPerPix / 2;
+                  break;
+               case N64Codec.RGBA16:
+               case N64Codec.IA16:
+                  nibblesPerPix = 4;
+                  pixOffset *= nibblesPerPix / 2;
+                  break;
+               case N64Codec.IA8:
+               case N64Codec.I8:
+               case N64Codec.CI8:
+                  nibblesPerPix = 2;
+                  break;
+               case N64Codec.IA4:
+               case N64Codec.I4:
+               case N64Codec.CI4:
+                  selectBits = 4;
+                  select = pixOffset & 0x1;
+                  pixOffset /= 2;
+                  break;
+               case N64Codec.ONEBPP:
+                  selectBits = 1;
+                  select = pixOffset & 0x7;
+                  pixOffset /= 8;
+                  break;
+            }
+
+            byte[] colorData;
+            if (gv == gviewPalette)
+            {
+               byteOffset += (int)numericPalette.Value;
+               colorData = paletteData;
+            }
+            else
+            {
+               byteOffset += offset;
+               colorData = romData;
+            }
+            if ((byteOffset + nibblesPerPix / 2) <= colorData.Length)
+            {
+               Color c = N64Graphics.MakeColor(colorData, paletteData, byteOffset, select, gv.Codec);
+               int value = 0;
+               for (int i = 0; i < (nibblesPerPix + 1) / 2; i++)
+               {
+                  value = (value << 8) | colorData[byteOffset + i];
+               }
+               switch (selectBits)
+               {
+                  case 4: value = (value >> ((1 - select) * 4)) & 0xf; break;
+                  case 1: value = (value >> select) & 0x1; break;
+               }
+               string hexFormat = String.Format("Hex: {{0:X0{0}}}", nibblesPerPix);
+               pictureBoxColor.BackColor = c;
+               labelColorHex.Text = String.Format(hexFormat, value);
+               labelColorR.Text = String.Format("R: {0}", c.R);
+               labelColorG.Text = String.Format("G: {0}", c.G);
+               labelColorB.Text = String.Format("B: {0}", c.B);
+               labelColorA.Text = String.Format("A: {0}", c.A);
+            }
+            else
+            {
+               pictureBoxColor.BackColor = Color.Empty;
+               labelColorHex.Text = "Hex:";
+               labelColorR.Text = "R:";
+               labelColorG.Text = "G:";
+               labelColorB.Text = "B:";
+               labelColorA.Text = "A:";
+            }
+         }
       }
 
       // this event is actually called for the entire Form and uses the hover state to determine how much to scroll
@@ -548,7 +633,7 @@ namespace Texture64
                advancePaletteOffset(gv, direction, pixelAmount);
                break;
             case System.Windows.Forms.MouseButtons.Right:
-               rightClickGv = gv;
+               rightClickGV = gv;
                break;
          }
       }
@@ -570,9 +655,9 @@ namespace Texture64
 
       private void gvExport_Click(object sender, EventArgs e)
       {
-         if (rightClickGv != null)
+         if (rightClickGV != null)
          {
-            exportTexture(rightClickGv);
+            exportTexture(rightClickGV);
          }
       }
 
@@ -584,7 +669,7 @@ namespace Texture64
 
       private void gvSetPaletteAfter_Click(object sender, EventArgs e)
       {
-         int paletteBytes = N64Graphics.PixelsToBytes(rightClickGv.Codec, rightClickGv.PixWidth * rightClickGv.PixHeight);
+         int paletteBytes = N64Graphics.PixelsToBytes(rightClickGV.Codec, rightClickGV.PixWidth * rightClickGV.PixHeight);
          setPaletteOffset(offset + paletteBytes);
       }
 
