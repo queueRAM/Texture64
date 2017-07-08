@@ -27,6 +27,9 @@ namespace Texture64
       // graphics viewer that was right-clicked to bring up context menu
       private GraphicsViewer rightClickGV = null;
 
+      // graphics viewer that was mouse down event occurred to detect mouse click
+      private GraphicsViewer clickedGV = null;
+
       public ImageForm()
       {
          InitializeComponent();
@@ -473,40 +476,53 @@ namespace Texture64
       private void graphicsViewerMap_MouseUp(object sender, MouseEventArgs e)
       {
          GraphicsViewer gv = (GraphicsViewer)sender;
-         switch (e.Button)
+         if (gv == clickedGV)
          {
-            case System.Windows.Forms.MouseButtons.Left:
-               int pixelAmount = (e.X + e.Y * gv.Width) / gv.PixScale;
-               advanceOffset(gv, 1, pixelAmount);
-               break;
-            case System.Windows.Forms.MouseButtons.Right:
-               rightClickGV = gv;
-               break;
+            switch (e.Button)
+            {
+               case System.Windows.Forms.MouseButtons.Left:
+                  int pixelAmount = (e.X + e.Y * gv.Width) / gv.PixScale;
+                  advanceOffset(gv, 1, pixelAmount);
+                  break;
+               case System.Windows.Forms.MouseButtons.Right:
+                  rightClickGV = gv;
+                  break;
+            }
          }
+         clickedGV = null;
+      }
+
+      private void graphicsViewer_MouseDown(object sender, MouseEventArgs e)
+      {
+         clickedGV = (GraphicsViewer)sender;
       }
 
       private void graphicsViewer_MouseUp(object sender, MouseEventArgs e)
       {
          GraphicsViewer gv = (GraphicsViewer)sender;
-         switch (e.Button)
+         if (gv == clickedGV)
          {
-            case System.Windows.Forms.MouseButtons.Left:
-               int direction = 1;
-               int pixelAmount = 0;
-               if ((Control.ModifierKeys & Keys.Control) == Keys.Control)
-               {
-                  direction = -1;
-               }
-               if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift)
-               {
-                  pixelAmount = 1;
-               }
-               advanceOffset(gv, direction, pixelAmount);
-               break;
-            case System.Windows.Forms.MouseButtons.Right:
-               rightClickGV = gv;
-               break;
+            switch (e.Button)
+            {
+               case System.Windows.Forms.MouseButtons.Left:
+                  int direction = 1;
+                  int pixelAmount = 0;
+                  if ((Control.ModifierKeys & Keys.Control) == Keys.Control)
+                  {
+                     direction = -1;
+                  }
+                  if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift)
+                  {
+                     pixelAmount = 1;
+                  }
+                  advanceOffset(gv, direction, pixelAmount);
+                  break;
+               case System.Windows.Forms.MouseButtons.Right:
+                  rightClickGV = gv;
+                  break;
+            }
          }
+         clickedGV = null;
       }
 
       private void graphicsViewer_MouseEnter(object sender, EventArgs e)
@@ -617,25 +633,29 @@ namespace Texture64
       private void gviewPalette_MouseUp(object sender, MouseEventArgs e)
       {
          GraphicsViewer gv = (GraphicsViewer)sender;
-         switch (e.Button)
+         if (gv == clickedGV)
          {
-            case System.Windows.Forms.MouseButtons.Left:
-               int direction = 1;
-               int pixelAmount = 0;
-               if ((Control.ModifierKeys & Keys.Control) == Keys.Control)
-               {
-                  direction = -1;
-               }
-               if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift)
-               {
-                  pixelAmount = 1;
-               }
-               advancePaletteOffset(gv, direction, pixelAmount);
-               break;
-            case System.Windows.Forms.MouseButtons.Right:
-               rightClickGV = gv;
-               break;
+            switch (e.Button)
+            {
+               case System.Windows.Forms.MouseButtons.Left:
+                  int direction = 1;
+                  int pixelAmount = 0;
+                  if ((Control.ModifierKeys & Keys.Control) == Keys.Control)
+                  {
+                     direction = -1;
+                  }
+                  if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift)
+                  {
+                     pixelAmount = 1;
+                  }
+                  advancePaletteOffset(gv, direction, pixelAmount);
+                  break;
+               case System.Windows.Forms.MouseButtons.Right:
+                  rightClickGV = gv;
+                  break;
+            }
          }
+         clickedGV = null;
       }
 
       private void insertImageFile(string imageFile)

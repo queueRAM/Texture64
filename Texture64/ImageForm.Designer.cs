@@ -799,6 +799,7 @@
          this.graphicsViewerCustom.PixWidth = 128;
          this.graphicsViewerCustom.Size = new System.Drawing.Size(256, 256);
          this.graphicsViewerCustom.TabIndex = 9;
+         this.graphicsViewerCustom.MouseDown += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseDown);
          this.graphicsViewerCustom.MouseEnter += new System.EventHandler(this.graphicsViewer_MouseEnter);
          this.graphicsViewerCustom.MouseLeave += new System.EventHandler(this.graphicsViewer_MouseLeave);
          this.graphicsViewerCustom.MouseMove += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseMove);
@@ -815,6 +816,7 @@
          this.graphicsViewer8x16.PixWidth = 8;
          this.graphicsViewer8x16.Size = new System.Drawing.Size(16, 32);
          this.graphicsViewer8x16.TabIndex = 32;
+         this.graphicsViewer8x16.MouseDown += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseDown);
          this.graphicsViewer8x16.MouseEnter += new System.EventHandler(this.graphicsViewer_MouseEnter);
          this.graphicsViewer8x16.MouseLeave += new System.EventHandler(this.graphicsViewer_MouseLeave);
          this.graphicsViewer8x16.MouseMove += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseMove);
@@ -832,6 +834,7 @@
          this.tableLayoutPanel1.SetRowSpan(this.graphicsViewer64x64, 3);
          this.graphicsViewer64x64.Size = new System.Drawing.Size(128, 128);
          this.graphicsViewer64x64.TabIndex = 3;
+         this.graphicsViewer64x64.MouseDown += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseDown);
          this.graphicsViewer64x64.MouseEnter += new System.EventHandler(this.graphicsViewer_MouseEnter);
          this.graphicsViewer64x64.MouseLeave += new System.EventHandler(this.graphicsViewer_MouseLeave);
          this.graphicsViewer64x64.MouseMove += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseMove);
@@ -849,6 +852,7 @@
          this.tableLayoutPanel1.SetRowSpan(this.graphicsViewer64x32, 3);
          this.graphicsViewer64x32.Size = new System.Drawing.Size(128, 64);
          this.graphicsViewer64x32.TabIndex = 25;
+         this.graphicsViewer64x32.MouseDown += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseDown);
          this.graphicsViewer64x32.MouseEnter += new System.EventHandler(this.graphicsViewer_MouseEnter);
          this.graphicsViewer64x32.MouseLeave += new System.EventHandler(this.graphicsViewer_MouseLeave);
          this.graphicsViewer64x32.MouseMove += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseMove);
@@ -866,6 +870,7 @@
          this.tableLayoutPanel1.SetRowSpan(this.graphicsViewer32x64, 3);
          this.graphicsViewer32x64.Size = new System.Drawing.Size(64, 128);
          this.graphicsViewer32x64.TabIndex = 24;
+         this.graphicsViewer32x64.MouseDown += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseDown);
          this.graphicsViewer32x64.MouseEnter += new System.EventHandler(this.graphicsViewer_MouseEnter);
          this.graphicsViewer32x64.MouseLeave += new System.EventHandler(this.graphicsViewer_MouseLeave);
          this.graphicsViewer32x64.MouseMove += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseMove);
@@ -882,6 +887,7 @@
          this.graphicsViewer8x8.PixWidth = 8;
          this.graphicsViewer8x8.Size = new System.Drawing.Size(16, 16);
          this.graphicsViewer8x8.TabIndex = 6;
+         this.graphicsViewer8x8.MouseDown += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseDown);
          this.graphicsViewer8x8.MouseEnter += new System.EventHandler(this.graphicsViewer_MouseEnter);
          this.graphicsViewer8x8.MouseLeave += new System.EventHandler(this.graphicsViewer_MouseLeave);
          this.graphicsViewer8x8.MouseMove += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseMove);
@@ -898,6 +904,7 @@
          this.graphicsViewer16x32.PixWidth = 16;
          this.graphicsViewer16x32.Size = new System.Drawing.Size(32, 64);
          this.graphicsViewer16x32.TabIndex = 27;
+         this.graphicsViewer16x32.MouseDown += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseDown);
          this.graphicsViewer16x32.MouseEnter += new System.EventHandler(this.graphicsViewer_MouseEnter);
          this.graphicsViewer16x32.MouseLeave += new System.EventHandler(this.graphicsViewer_MouseLeave);
          this.graphicsViewer16x32.MouseMove += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseMove);
@@ -914,6 +921,7 @@
          this.graphicsViewer16x16.PixWidth = 16;
          this.graphicsViewer16x16.Size = new System.Drawing.Size(32, 32);
          this.graphicsViewer16x16.TabIndex = 5;
+         this.graphicsViewer16x16.MouseDown += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseDown);
          this.graphicsViewer16x16.MouseEnter += new System.EventHandler(this.graphicsViewer_MouseEnter);
          this.graphicsViewer16x16.MouseLeave += new System.EventHandler(this.graphicsViewer_MouseLeave);
          this.graphicsViewer16x16.MouseMove += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseMove);
@@ -931,6 +939,7 @@
          this.tableLayoutPanel1.SetRowSpan(this.graphicsViewer32x32, 3);
          this.graphicsViewer32x32.Size = new System.Drawing.Size(64, 64);
          this.graphicsViewer32x32.TabIndex = 4;
+         this.graphicsViewer32x32.MouseDown += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseDown);
          this.graphicsViewer32x32.MouseEnter += new System.EventHandler(this.graphicsViewer_MouseEnter);
          this.graphicsViewer32x32.MouseLeave += new System.EventHandler(this.graphicsViewer_MouseLeave);
          this.graphicsViewer32x32.MouseMove += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseMove);
@@ -947,6 +956,7 @@
          this.gviewPalette.PixWidth = 16;
          this.gviewPalette.Size = new System.Drawing.Size(128, 128);
          this.gviewPalette.TabIndex = 0;
+         this.gviewPalette.MouseDown += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseDown);
          this.gviewPalette.MouseMove += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseMove);
          this.gviewPalette.MouseUp += new System.Windows.Forms.MouseEventHandler(this.gviewPalette_MouseUp);
          // 
@@ -963,6 +973,7 @@
          this.graphicsViewerMap.PixWidth = 128;
          this.graphicsViewerMap.Size = new System.Drawing.Size(128, 510);
          this.graphicsViewerMap.TabIndex = 7;
+         this.graphicsViewerMap.MouseDown += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseDown);
          this.graphicsViewerMap.MouseEnter += new System.EventHandler(this.graphicsViewer_MouseEnter);
          this.graphicsViewerMap.MouseLeave += new System.EventHandler(this.graphicsViewer_MouseLeave);
          this.graphicsViewerMap.MouseMove += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseMove);
