@@ -34,10 +34,10 @@
          this.labelProductName = new System.Windows.Forms.Label();
          this.labelVersion = new System.Windows.Forms.Label();
          this.labelCopyright = new System.Windows.Forms.Label();
-         this.okButton = new System.Windows.Forms.Button();
          this.labelDescription = new System.Windows.Forms.Label();
-         this.timerAnimate = new System.Windows.Forms.Timer(this.components);
+         this.okButton = new System.Windows.Forms.Button();
          this.textBox1 = new System.Windows.Forms.TextBox();
+         this.timerAnimate = new System.Windows.Forms.Timer(this.components);
          this.tableLayoutPanel.SuspendLayout();
          ((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).BeginInit();
          this.SuspendLayout();
@@ -64,7 +64,7 @@
          this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
          this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
          this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-         this.tableLayoutPanel.Size = new System.Drawing.Size(446, 253);
+         this.tableLayoutPanel.Size = new System.Drawing.Size(446, 269);
          this.tableLayoutPanel.TabIndex = 0;
          // 
          // logoPictureBox
@@ -74,7 +74,7 @@
          this.logoPictureBox.Location = new System.Drawing.Point(3, 3);
          this.logoPictureBox.Name = "logoPictureBox";
          this.tableLayoutPanel.SetRowSpan(this.logoPictureBox, 6);
-         this.logoPictureBox.Size = new System.Drawing.Size(34, 247);
+         this.logoPictureBox.Size = new System.Drawing.Size(34, 263);
          this.logoPictureBox.TabIndex = 12;
          this.logoPictureBox.TabStop = false;
          // 
@@ -114,16 +114,6 @@
          this.labelCopyright.Text = "Copyright";
          this.labelCopyright.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
          // 
-         // okButton
-         // 
-         this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-         this.okButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-         this.okButton.Location = new System.Drawing.Point(368, 227);
-         this.okButton.Name = "okButton";
-         this.okButton.Size = new System.Drawing.Size(75, 23);
-         this.okButton.TabIndex = 24;
-         this.okButton.Text = "&OK";
-         // 
          // labelDescription
          // 
          this.labelDescription.AutoSize = true;
@@ -133,11 +123,15 @@
          this.labelDescription.TabIndex = 25;
          this.labelDescription.Text = "Description";
          // 
-         // timerAnimate
+         // okButton
          // 
-         this.timerAnimate.Enabled = true;
-         this.timerAnimate.Interval = 200;
-         this.timerAnimate.Tick += new System.EventHandler(this.timerAnimate_Tick);
+         this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+         this.okButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+         this.okButton.Location = new System.Drawing.Point(368, 243);
+         this.okButton.Name = "okButton";
+         this.okButton.Size = new System.Drawing.Size(75, 23);
+         this.okButton.TabIndex = 24;
+         this.okButton.Text = "&OK";
          // 
          // textBox1
          // 
@@ -148,16 +142,22 @@
          this.textBox1.Multiline = true;
          this.textBox1.Name = "textBox1";
          this.textBox1.ReadOnly = true;
-         this.textBox1.Size = new System.Drawing.Size(400, 128);
+         this.textBox1.Size = new System.Drawing.Size(400, 168);
          this.textBox1.TabIndex = 26;
          this.textBox1.Text = resources.GetString("textBox1.Text");
+         // 
+         // timerAnimate
+         // 
+         this.timerAnimate.Enabled = true;
+         this.timerAnimate.Interval = 200;
+         this.timerAnimate.Tick += new System.EventHandler(this.timerAnimate_Tick);
          // 
          // AboutBox
          // 
          this.AcceptButton = this.okButton;
          this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
          this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-         this.ClientSize = new System.Drawing.Size(464, 271);
+         this.ClientSize = new System.Drawing.Size(464, 287);
          this.Controls.Add(this.tableLayoutPanel);
          this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
          this.MaximizeBox = false;

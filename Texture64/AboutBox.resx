@@ -146,11 +146,14 @@
   </data>
   <data name="textBox1.Text" xml:space="preserve">
     <value>Usage:
- • Right-click image to extract to image file (.png, .jpg, .bmp)
+ • Right-click image to bring up context menu
+    • Export to image file (.png, .jpg, .bmp)
+    • Assign palette offset relative to current texture view
  • Left-click to advance offset by the entire image
     • Hold Ctrl modifier to reverse by entire image
     • Hold Shift modifier to advance/reverse by one pixel (varies by format)
  • Mouse wheel to scroll up/down by rows of image
+    • Hold Shift modifier to scroll by one row
  • Click "Insert..." to import image in place at current offset (does not overwrite file)
  • Click "Save" to overwrite opened file</value>
   </data>

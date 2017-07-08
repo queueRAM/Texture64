@@ -619,8 +619,13 @@ namespace Texture64
       {
          if (hoverGV != null)
          {
+            int rowAmount = 4;
+            if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift)
+            {
+               rowAmount = 1;
+            }
             int direction = -Math.Sign(e.Delta);
-            int pixelAmount = 4 * hoverGV.GetPixelWidth();
+            int pixelAmount = rowAmount * hoverGV.GetPixelWidth();
             advanceOffset(hoverGV, direction, pixelAmount);
          }
       }
