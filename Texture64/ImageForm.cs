@@ -413,7 +413,7 @@ namespace Texture64
                offsetSize = N64Graphics.PixelsToBytes(gv.Codec, advancePixels);
             }
             int change = direction * offsetSize;
-            int newOffset = Math.Max(0, Math.Min(romData.Length - change, offset + change));
+            int newOffset = Math.Max(0, Math.Min(romData.Length - 1, offset + change));
             numericOffset.Value = newOffset;
          }
       }
@@ -433,7 +433,7 @@ namespace Texture64
             }
             int palOffset = (int)numericPalette.Value;
             int change = direction * offsetSize;
-            int newOffset = Math.Max(0, Math.Min(paletteData.Length - change, palOffset + change));
+            int newOffset = Math.Max(0, Math.Min(paletteData.Length - 1, palOffset + change));
             numericPalette.Value = newOffset;
          }
       }
