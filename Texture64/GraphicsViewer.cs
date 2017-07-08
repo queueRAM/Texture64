@@ -9,11 +9,22 @@ namespace Texture64
       private byte[] palette;
       private int offset;
 
-      private int myPixScale = 2;
+      public bool AutoPixelSize { get; set; }
+      private Size myPixSize;
+      public Size PixSize
+      {
+         get
+         {
+            return myPixSize;
+         }
+         set
+         {
+            myPixSize = value;
+            this.Size = new Size(value.Width * PixScale, value.Height * PixScale);
+         }
+      }
+      public int PixScale { get; set; }
 
-      public int PixWidth { get { return Width / myPixScale; } set { this.Width = value * PixScale; } }
-      public int PixHeight { get { return Height / myPixScale; } set { this.Height = value * PixScale; } }
-      public int PixScale { get { return myPixScale; } set { myPixScale = value; this.Width = myPixScale * PixWidth; this.Height = myPixScale * PixHeight; } }
       public N64Codec Codec { get; set; }
 
       public GraphicsViewer()
@@ -45,24 +56,19 @@ namespace Texture64
 
       public int GetPixelHeight()
       {
-         return (PixHeight > 0) ? PixHeight : Height / PixScale;
+         return AutoPixelSize ? Height / PixScale : PixSize.Height;
       }
 
       public int GetPixelWidth()
       {
-         return (PixWidth > 0) ? PixWidth : Width / PixScale;
-      }
-
-      private void renderTexture(Graphics g, int scale)
-      {
-         N64Graphics.RenderTexture(g, data, palette, offset, GetPixelWidth(), GetPixelHeight(), scale, Codec);
+         return AutoPixelSize ? Width / PixScale : PixSize.Width;
       }
 
       private void GraphicsViewer_Paint(object sender, PaintEventArgs e)
       {
          if (data != null)
          {
-            renderTexture(e.Graphics, PixScale);
+            N64Graphics.RenderTexture(e.Graphics, data, palette, offset, GetPixelWidth(), GetPixelHeight(), PixScale, Codec);
          }
          e.Graphics.DrawRectangle(new Pen(Color.Black), 0, 0, GetPixelWidth() * PixScale - 1, GetPixelHeight() * PixScale - 1);
       }
@@ -72,4 +78,5 @@ namespace Texture64
          Invalidate();
       }
    }
+
 }

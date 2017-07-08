@@ -212,13 +212,9 @@ namespace Texture64
             switch (viewerCodec)
             {
                case N64Codec.CI8:
-                  gviewPalette.PixHeight = 16;
-                  gviewPalette.PixWidth = 16;
                   gviewPalette.PixScale = 8;
                   break;
                case N64Codec.CI4:
-                  gviewPalette.PixHeight = 4;
-                  gviewPalette.PixWidth = 4;
                   gviewPalette.PixScale = 32;
                   break;
             }
@@ -234,7 +230,7 @@ namespace Texture64
             {
                int pixScale = (1 + toolStripScale.SelectedIndex);
                // TODO: GraphicsViewer should resize itself when pixScale is changed, but it doesn't work for some reason
-               gv.Size = new System.Drawing.Size(pixScale * gv.PixWidth, pixScale * gv.PixHeight);
+               gv.Size = new System.Drawing.Size(pixScale * gv.GetPixelWidth(), pixScale * gv.GetPixelHeight());
                gv.PixScale = pixScale;
                gv.Invalidate();
             }
@@ -281,13 +277,13 @@ namespace Texture64
 
       private void numericUpDownWidth_ValueChanged(object sender, EventArgs e)
       {
-         graphicsViewerCustom.PixWidth = (int)numericUpDownWidth.Value;
+         graphicsViewerCustom.PixSize = new Size((int)numericUpDownWidth.Value, graphicsViewerCustom.PixSize.Height);
          graphicsViewerCustom.Refresh();
       }
 
       private void numericUpDownHeight_ValueChanged(object sender, EventArgs e)
       {
-         graphicsViewerCustom.PixHeight = (int)numericUpDownHeight.Value;
+         graphicsViewerCustom.PixSize = new Size(graphicsViewerCustom.PixSize.Width, (int)numericUpDownHeight.Value);
          graphicsViewerCustom.Refresh();
       }
 
@@ -301,7 +297,7 @@ namespace Texture64
          UpdatePalette();
       }
 
-      private void numericTextPalette_ValueChanged(object sender, EventArgs e)
+      private void numericPalette_ValueChanged(object sender, EventArgs e)
       {
          UpdatePalette();
       }
@@ -440,7 +436,7 @@ namespace Texture64
          int offsetSize;
          if (advancePixels == 0)
          {
-            offsetSize = N64Graphics.PixelsToBytes(gv.Codec, gv.PixWidth * gv.PixHeight);
+            offsetSize = N64Graphics.PixelsToBytes(gv.Codec, gv.PixSize.Width * gv.PixSize.Height);
          }
          else
          {
@@ -461,9 +457,9 @@ namespace Texture64
 
          if (dResult == DialogResult.OK)
          {
-            Bitmap bitmap = new Bitmap(gv.PixWidth, gv.PixHeight, PixelFormat.Format32bppArgb);
+            Bitmap bitmap = new Bitmap(gv.PixSize.Width, gv.PixSize.Height, PixelFormat.Format32bppArgb);
             Graphics g = Graphics.FromImage(bitmap);
-            N64Graphics.RenderTexture(g, romData, curPalette, offset, gv.PixWidth, gv.GetPixelHeight(), 1, gv.Codec);
+            N64Graphics.RenderTexture(g, romData, curPalette, offset, gv.PixSize.Width, gv.GetPixelHeight(), 1, gv.Codec);
             switch (sfd.FilterIndex)
             {
                case 1: bitmap.Save(sfd.FileName, ImageFormat.Png); break;
@@ -578,8 +574,7 @@ namespace Texture64
             byte[] colorData;
             if (gv == gviewPalette)
             {
-               byteOffset += (int)numericPalette.Value;
-               colorData = paletteData;
+               colorData = curPalette;
             }
             else
             {
@@ -588,7 +583,7 @@ namespace Texture64
             }
             if ((byteOffset + nibblesPerPix / 2) <= colorData.Length)
             {
-               Color c = N64Graphics.MakeColor(colorData, paletteData, byteOffset, select, gv.Codec);
+               Color c = N64Graphics.MakeColor(colorData, curPalette, byteOffset, select, gv.Codec);
                int value = 0;
                for (int i = 0; i < (nibblesPerPix + 1) / 2; i++)
                {
@@ -683,13 +678,13 @@ namespace Texture64
 
       private void gvSetPaletteBefore_Click(object sender, EventArgs e)
       {
-         int paletteBytes = N64Graphics.PixelsToBytes(gviewPalette.Codec, gviewPalette.PixWidth * gviewPalette.PixHeight);
+         int paletteBytes = N64Graphics.PixelsToBytes(gviewPalette.Codec, gviewPalette.PixSize.Width * gviewPalette.PixSize.Height);
          setPaletteOffset(offset - paletteBytes);
       }
 
       private void gvSetPaletteAfter_Click(object sender, EventArgs e)
       {
-         int paletteBytes = N64Graphics.PixelsToBytes(rightClickGV.Codec, rightClickGV.PixWidth * rightClickGV.PixHeight);
+         int paletteBytes = N64Graphics.PixelsToBytes(rightClickGV.Codec, rightClickGV.PixSize.Width * rightClickGV.PixSize.Height);
          setPaletteOffset(offset + paletteBytes);
       }
 
