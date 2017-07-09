@@ -77,6 +77,45 @@ namespace Texture64
          }
       }
 
+      private void ImageForm_FormClosing(object sender, FormClosingEventArgs e)
+      {
+         if (NeedsSaveCancel())
+         {
+            e.Cancel = true;
+         }
+      }
+
+      private void SaveFiles()
+      {
+         if (fileDataChanged)
+         {
+            SaveBinFile(savePath, romData, 0, romData.Length);
+         }
+         if (extPaletteChanged)
+         {
+            SaveBinFile(savePalettePath, extPaletteData, 0, extPaletteData.Length);
+         }
+         toolStripSave.Enabled = false;
+      }
+
+      // returns true if save confirmation is canceled
+      private bool NeedsSaveCancel()
+      {
+         if (extPaletteChanged || fileDataChanged)
+         {
+            DialogResult result = MessageBox.Show("Save Current Changes?", "Confirm Save", MessageBoxButtons.YesNoCancel);
+            switch (result)
+            {
+               case DialogResult.Yes:
+                  SaveFiles();
+                  break;
+               case DialogResult.Cancel:
+                  return true;
+            }
+         }
+         return false;
+      }
+
       private static bool SaveBinFile(string filePath, byte[] data, int start, int end)
       {
          try
@@ -165,17 +204,22 @@ namespace Texture64
 
       private void toolStripOpen_Click(object sender, EventArgs e)
       {
-         OpenFileDialog ofd = new OpenFileDialog();
-
-         ofd.Filter = "All Files (*.*)|*.*|Common ROMs (.*64)|*.*64";
-         ofd.FilterIndex = 1;
-
-         DialogResult dresult = ofd.ShowDialog();
-
-         if (dresult == DialogResult.OK)
+         if (!NeedsSaveCancel())
          {
-            readData(ofd.FileName);
-            toolStripInsert.Enabled = true;
+            OpenFileDialog ofd = new OpenFileDialog();
+
+            ofd.Filter = "All Files (*.*)|*.*|Common ROMs (.*64)|*.*64";
+            ofd.FilterIndex = 1;
+
+            DialogResult dresult = ofd.ShowDialog();
+
+            if (dresult == DialogResult.OK)
+            {
+               readData(ofd.FileName);
+               toolStripInsert.Enabled = true;
+               fileDataChanged = false;
+               toolStripSave.Enabled = false;
+            }
          }
       }
 
@@ -197,15 +241,7 @@ namespace Texture64
 
       private void toolStripSave_Click(object sender, EventArgs e)
       {
-         if (fileDataChanged)
-         {
-            SaveBinFile(savePath, romData, 0, romData.Length);
-         }
-         if (extPaletteChanged)
-         {
-            SaveBinFile(savePalettePath, extPaletteData, 0, extPaletteData.Length);
-         }
-         toolStripSave.Enabled = false;
+         SaveFiles();
       }
 
       private void toolStripCodec_SelectedIndexChanged(object sender, EventArgs e)
@@ -450,6 +486,7 @@ namespace Texture64
                UpdatePalette();
                paletteFileLabel.Text = Path.GetFileName(ofd.FileName);
                savePalettePath = ofd.FileName;
+               extPaletteChanged = false;
             }
          }
       }
