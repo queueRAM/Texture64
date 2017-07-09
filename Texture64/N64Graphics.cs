@@ -21,6 +21,11 @@ namespace Texture64
          return (byte)(val / 0x11);
       }
 
+      private static int SCALE_3_8(byte val)
+      {
+         return (val * 0xFF) / 0x7;
+      }
+
       private static byte SCALE_8_3(byte val)
       {
          return (byte)(val / 0x24);
@@ -74,7 +79,7 @@ namespace Texture64
          int shift = (1 - nibble) * 4;
          int i, a;
          int val = (data[pixOffset] >> shift) & 0xF;
-         i = (val >> 1) * 0x24;
+         i = SCALE_3_8((byte)(val >> 1));
          a = (val & 0x1) > 0 ? 0xFF : 0x00;
          return Color.FromArgb(a, i, i, i);
       }
