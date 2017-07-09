@@ -581,7 +581,7 @@ namespace Texture64
                byteOffset += offset;
                colorData = romData;
             }
-            if ((byteOffset + nibblesPerPix / 2) <= colorData.Length)
+            if (byteOffset >= 0 && (byteOffset + nibblesPerPix / 2) <= colorData.Length)
             {
                Color c = N64Graphics.MakeColor(colorData, curPalette, byteOffset, select, gv.Codec);
                int value = 0;
