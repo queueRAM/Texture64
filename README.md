@@ -34,6 +34,11 @@ N64 texture ripper and editor
 
 ### Changelog ###
 
+0.0.3: Beta test 3 release
+* Add right-click context menu for exporting and setting palette offset
+* Show hovered pixel color information
+* Add Shift modifier for mouse wheel scrolling
+
 0.0.2: Beta test 2 release
 * Improve responsiveness of click events
 * Add mouse wheel support for scrolling up/down rows
