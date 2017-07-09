@@ -1,7 +1,8 @@
 # Texture64
 N64 texture ripper and editor
 
-![ScreenShot](https://i.imgur.com/GlNDv7W.png)
+![ScreenShot](https://i.imgur.com/g8H8IVc.png "RGBA16 SM64 HUD Elements - Win7")
+![ScreenShot](https://i.imgur.com/hCGskoi.png "CI8 MK64 Bombs - Linux")
 
 ## Current Features
 * Export or import N64 textures of the following formats:
