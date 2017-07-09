@@ -716,7 +716,8 @@ namespace Texture64
 
          N64Graphics.Convert(ref imageData, ref paletteData, viewerCodec, bm);
 
-         Array.Copy(imageData, 0, romData, offset, imageData.Length);
+         int copyLength = Math.Min(imageData.Length, romData.Length - offset);
+         Array.Copy(imageData, 0, romData, offset, copyLength);
          fileDataChanged = true;
 
          if (paletteData != null)
@@ -732,7 +733,7 @@ namespace Texture64
                paletteDest = romData;
             }
             int palOffset = (int)numericPalette.Value;
-            int copyLength = Math.Min(paletteData.Length, paletteDest.Length - palOffset);
+            copyLength = Math.Min(paletteData.Length, paletteDest.Length - palOffset);
             if (copyLength > 0)
             {
                Array.Copy(paletteData, 0, paletteDest, palOffset, copyLength);
