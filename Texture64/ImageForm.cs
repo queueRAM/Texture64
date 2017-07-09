@@ -10,8 +10,13 @@ namespace Texture64
    public partial class ImageForm : Form
    {
       private string savePath = null;
+      private string savePalettePath = null;
       private byte[] romData;
+      // external palette data
+      private byte[] extPaletteData;
+      // raw palette data (either reference to romData or external palette)
       private byte[] paletteData;
+      // merged paletteData and split data
       private byte[] curPalette;
       private int offset = 0;
       private N64Codec viewerCodec = N64Codec.RGBA16;
@@ -297,6 +302,21 @@ namespace Texture64
          UpdatePalette();
       }
 
+      private void checkExtPalette_CheckedChanged(object sender, EventArgs e)
+      {
+         separatePalette = checkExtPalette.Checked;
+         loadPaletteButton.Enabled = separatePalette;
+         if (separatePalette)
+         {
+            paletteData = extPaletteData;
+         }
+         else
+         {
+            paletteData = romData;
+         }
+         UpdatePalette();
+      }
+
       private void numericPalette_ValueChanged(object sender, EventArgs e)
       {
          UpdatePalette();
@@ -389,16 +409,29 @@ namespace Texture64
 
          if (dresult == DialogResult.OK)
          {
-            byte[] tmpData = System.IO.File.ReadAllBytes(ofd.FileName);
+            byte[] tmpData;
+            try
+            {
+               tmpData = System.IO.File.ReadAllBytes(ofd.FileName);
+            }
+            catch (Exception ex)
+            {
+               MessageBox.Show(ex.Message, "Error reading " + ofd.FileName);
+               statusStripFile.Text = "Error reading " + ofd.FileName;
+               statusStripFile.ForeColor = Color.Red;
+               return;
+            }
+
             if (tmpData != null)
             {
+               extPaletteData = tmpData;
                paletteData = tmpData;
                numericPalette.Enabled = true;
                numericPalette.Maximum = paletteData.Length;
                numericSplitOffset.Maximum = paletteData.Length;
-               separatePalette = true;
                UpdatePalette();
                paletteFileLabel.Text = Path.GetFileName(ofd.FileName);
+               savePalettePath = ofd.FileName;
             }
          }
       }
@@ -685,12 +718,14 @@ namespace Texture64
       {
          int paletteBytes = N64Graphics.PixelsToBytes(gviewPalette.Codec, gviewPalette.PixSize.Width * gviewPalette.PixSize.Height);
          setPaletteOffset(offset - paletteBytes);
+         checkExtPalette.Checked = false;
       }
 
       private void gvSetPaletteAfter_Click(object sender, EventArgs e)
       {
          int paletteBytes = N64Graphics.PixelsToBytes(rightClickGV.Codec, rightClickGV.PixSize.Width * rightClickGV.PixSize.Height);
          setPaletteOffset(offset + paletteBytes);
+         checkExtPalette.Checked = false;
       }
 
    }

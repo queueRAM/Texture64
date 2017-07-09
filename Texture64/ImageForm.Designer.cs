@@ -102,6 +102,7 @@
          this.graphicsViewer32x32 = new Texture64.GraphicsViewer();
          this.gviewPalette = new Texture64.GraphicsViewer();
          this.graphicsViewerMap = new Texture64.GraphicsViewer();
+         this.checkExtPalette = new System.Windows.Forms.CheckBox();
          this.statusStrip1.SuspendLayout();
          this.toolStrip1.SuspendLayout();
          ((System.ComponentModel.ISupportInitialize)(this.numericUpDownWidth)).BeginInit();
@@ -347,6 +348,7 @@
          // groupBoxPalette
          // 
          this.groupBoxPalette.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+         this.groupBoxPalette.Controls.Add(this.checkExtPalette);
          this.groupBoxPalette.Controls.Add(this.label15);
          this.groupBoxPalette.Controls.Add(this.numericSplitOffset);
          this.groupBoxPalette.Controls.Add(this.numericSplitLength);
@@ -362,7 +364,7 @@
          this.groupBoxPalette.Controls.Add(this.gviewPalette);
          this.groupBoxPalette.Location = new System.Drawing.Point(437, 166);
          this.groupBoxPalette.Name = "groupBoxPalette";
-         this.groupBoxPalette.Size = new System.Drawing.Size(143, 323);
+         this.groupBoxPalette.Size = new System.Drawing.Size(143, 346);
          this.groupBoxPalette.TabIndex = 16;
          this.groupBoxPalette.TabStop = false;
          this.groupBoxPalette.Text = "CI Palette:";
@@ -430,7 +432,7 @@
          // paletteFileLabel
          // 
          this.paletteFileLabel.AutoSize = true;
-         this.paletteFileLabel.Location = new System.Drawing.Point(7, 305);
+         this.paletteFileLabel.Location = new System.Drawing.Point(3, 325);
          this.paletteFileLabel.Name = "paletteFileLabel";
          this.paletteFileLabel.Size = new System.Drawing.Size(59, 13);
          this.paletteFileLabel.TabIndex = 13;
@@ -438,9 +440,10 @@
          // 
          // loadPaletteButton
          // 
+         this.loadPaletteButton.Enabled = false;
          this.loadPaletteButton.Image = ((System.Drawing.Image)(resources.GetObject("loadPaletteButton.Image")));
          this.loadPaletteButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-         this.loadPaletteButton.Location = new System.Drawing.Point(6, 275);
+         this.loadPaletteButton.Location = new System.Drawing.Point(6, 299);
          this.loadPaletteButton.Name = "loadPaletteButton";
          this.loadPaletteButton.Size = new System.Drawing.Size(127, 23);
          this.loadPaletteButton.TabIndex = 12;
@@ -979,6 +982,17 @@
          this.graphicsViewerMap.MouseMove += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseMove);
          this.graphicsViewerMap.MouseUp += new System.Windows.Forms.MouseEventHandler(this.graphicsViewerMap_MouseUp);
          // 
+         // checkExtPalette
+         // 
+         this.checkExtPalette.AutoSize = true;
+         this.checkExtPalette.Location = new System.Drawing.Point(6, 276);
+         this.checkExtPalette.Name = "checkExtPalette";
+         this.checkExtPalette.Size = new System.Drawing.Size(122, 17);
+         this.checkExtPalette.TabIndex = 39;
+         this.checkExtPalette.Text = "Use External Palette";
+         this.checkExtPalette.UseVisualStyleBackColor = true;
+         this.checkExtPalette.CheckedChanged += new System.EventHandler(this.checkExtPalette_CheckedChanged);
+         // 
          // ImageForm
          // 
          this.AllowDrop = true;
@@ -1100,6 +1114,7 @@
         private System.Windows.Forms.Label labelColorG;
         private System.Windows.Forms.Label labelColorA;
         private System.Windows.Forms.Label labelColorB;
+        private System.Windows.Forms.CheckBox checkExtPalette;
     }
 }
 
