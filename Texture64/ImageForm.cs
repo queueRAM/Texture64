@@ -9,21 +9,31 @@ namespace Texture64
 {
    public partial class ImageForm : Form
    {
+      // opened file data
       private string savePath = null;
-      private string savePalettePath = null;
       private byte[] romData;
+      private bool fileDataChanged = false;
+      private int offset = 0;
+      private string basename;
+
       // external palette data
+      private string savePalettePath = null;
       private byte[] extPaletteData;
+      private bool extPaletteChanged = false;
+
       // raw palette data (either reference to romData or external palette)
       private byte[] paletteData;
       // merged paletteData and split data
       private byte[] curPalette;
-      private int offset = 0;
-      private N64Codec viewerCodec = N64Codec.RGBA16;
       private bool separatePalette = false;
-      private bool validData;
-      private string basename;
+
+      private N64Codec viewerCodec = N64Codec.RGBA16;
+
+      // drag and drop data
       private string lastFilename;
+      private bool validDragData;
+
+      // list of viewers to update
       private List<GraphicsViewer> viewers = new List<GraphicsViewer>();
 
       // graphics viewer that is being hovered over for mouse wheel hooking
@@ -166,7 +176,6 @@ namespace Texture64
          {
             readData(ofd.FileName);
             toolStripInsert.Enabled = true;
-            toolStripSave.Enabled = true;
          }
       }
 
@@ -182,12 +191,21 @@ namespace Texture64
          if (dresult == DialogResult.OK)
          {
             insertImageFile(ofd.FileName);
+            toolStripSave.Enabled = true;
          }
       }
 
       private void toolStripSave_Click(object sender, EventArgs e)
       {
-         SaveBinFile(savePath, romData, 0, romData.Length);
+         if (fileDataChanged)
+         {
+            SaveBinFile(savePath, romData, 0, romData.Length);
+         }
+         if (extPaletteChanged)
+         {
+            SaveBinFile(savePalettePath, extPaletteData, 0, extPaletteData.Length);
+         }
+         toolStripSave.Enabled = false;
       }
 
       private void toolStripCodec_SelectedIndexChanged(object sender, EventArgs e)
@@ -353,7 +371,7 @@ namespace Texture64
 
       private void ImageForm_DragDrop(object sender, DragEventArgs e)
       {
-         if (validData)
+         if (validDragData)
          {
             readData(lastFilename);
          }
@@ -383,8 +401,8 @@ namespace Texture64
       private void ImageForm_DragEnter(object sender, DragEventArgs e)
       {
          string filename;
-         validData = GetFilename(out filename, e);
-         if (validData)
+         validDragData = GetFilename(out filename, e);
+         if (validDragData)
          {
             if (lastFilename != filename)
             {
@@ -695,11 +713,33 @@ namespace Texture64
       {
          Bitmap bm = new Bitmap(imageFile);
          byte[] imageData = null, paletteData = null;
+
          N64Graphics.Convert(ref imageData, ref paletteData, viewerCodec, bm);
-         for (int i = 0; i < imageData.Length; i++)
+
+         Array.Copy(imageData, 0, romData, offset, imageData.Length);
+         fileDataChanged = true;
+
+         if (paletteData != null)
          {
-            romData[offset + i] = imageData[i];
+            byte[] paletteDest;
+            if (separatePalette && extPaletteData != null)
+            {
+               extPaletteChanged = true;
+               paletteDest = extPaletteData;
+            }
+            else
+            {
+               paletteDest = romData;
+            }
+            int palOffset = (int)numericPalette.Value;
+            int copyLength = Math.Min(paletteData.Length, paletteDest.Length - palOffset);
+            if (copyLength > 0)
+            {
+               Array.Copy(paletteData, 0, paletteDest, palOffset, copyLength);
+               UpdatePalette();
+            }
          }
+
          foreach (GraphicsViewer gv in viewers)
          {
             gv.Invalidate();
