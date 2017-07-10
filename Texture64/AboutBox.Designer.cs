@@ -64,7 +64,7 @@
          this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
          this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
          this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-         this.tableLayoutPanel.Size = new System.Drawing.Size(446, 269);
+         this.tableLayoutPanel.Size = new System.Drawing.Size(446, 297);
          this.tableLayoutPanel.TabIndex = 0;
          // 
          // logoPictureBox
@@ -74,7 +74,7 @@
          this.logoPictureBox.Location = new System.Drawing.Point(3, 3);
          this.logoPictureBox.Name = "logoPictureBox";
          this.tableLayoutPanel.SetRowSpan(this.logoPictureBox, 6);
-         this.logoPictureBox.Size = new System.Drawing.Size(34, 263);
+         this.logoPictureBox.Size = new System.Drawing.Size(34, 291);
          this.logoPictureBox.TabIndex = 12;
          this.logoPictureBox.TabStop = false;
          // 
@@ -127,7 +127,7 @@
          // 
          this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
          this.okButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-         this.okButton.Location = new System.Drawing.Point(368, 243);
+         this.okButton.Location = new System.Drawing.Point(368, 271);
          this.okButton.Name = "okButton";
          this.okButton.Size = new System.Drawing.Size(75, 23);
          this.okButton.TabIndex = 24;
@@ -142,7 +142,7 @@
          this.textBox1.Multiline = true;
          this.textBox1.Name = "textBox1";
          this.textBox1.ReadOnly = true;
-         this.textBox1.Size = new System.Drawing.Size(400, 168);
+         this.textBox1.Size = new System.Drawing.Size(400, 198);
          this.textBox1.TabIndex = 26;
          this.textBox1.Text = resources.GetString("textBox1.Text");
          // 
@@ -157,7 +157,7 @@
          this.AcceptButton = this.okButton;
          this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
          this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-         this.ClientSize = new System.Drawing.Size(464, 287);
+         this.ClientSize = new System.Drawing.Size(464, 315);
          this.Controls.Add(this.tableLayoutPanel);
          this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
          this.MaximizeBox = false;

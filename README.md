@@ -24,13 +24,16 @@ N64 texture ripper and editor
 * Right-click image to bring up context menu
    * Export to image file (.png, .jpg, .bmp)
    * Assign palette offset relative to current texture view
-* Left-click to advance offset by the entire image
-   * Hold Ctrl modifier to reverse by entire image
-   * Hold Shift modifier to advance/reverse by one pixel (varies by format)
+* Left-click to change offset to clicked pixel
 * Mouse wheel to scroll up/down by four rows of image
-   * Hold Shift modifier to scroll by one row
-* Click "Insert..." to import image in place at current offset (does not overwrite file)
-* Click "Save" to overwrite opened file
+   * Hold Ctrl modifier to scroll by entire image
+   * Hold Alt modifier to scroll by one row
+   * Hold Shift modifier to scroll by one pixel
+* Click "Open..." [Ctrl-O] or drag and drop to open a binary file
+* Click "Insert..." [Ctrl-I] to import image at current offset (does not overwrite file)
+* Click "Save" [Ctrl-S] to overwrite opened file
+* Enable "Split Palette" to point end of palette to different offset
+* Enable "External Palette" to use different file for CI palette
 
 ### Changelog ###
 

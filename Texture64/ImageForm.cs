@@ -595,25 +595,6 @@ namespace Texture64
          }
       }
 
-      private void graphicsViewerMap_MouseUp(object sender, MouseEventArgs e)
-      {
-         GraphicsViewer gv = (GraphicsViewer)sender;
-         if (gv == clickedGV)
-         {
-            switch (e.Button)
-            {
-               case System.Windows.Forms.MouseButtons.Left:
-                  int pixelAmount = (e.X + e.Y * gv.Width) / gv.PixScale;
-                  advanceOffset(gv, 1, pixelAmount);
-                  break;
-               case System.Windows.Forms.MouseButtons.Right:
-                  rightClickGV = gv;
-                  break;
-            }
-         }
-         clickedGV = null;
-      }
-
       private void graphicsViewer_MouseDown(object sender, MouseEventArgs e)
       {
          clickedGV = (GraphicsViewer)sender;
@@ -627,17 +608,8 @@ namespace Texture64
             switch (e.Button)
             {
                case System.Windows.Forms.MouseButtons.Left:
-                  int direction = 1;
-                  int pixelAmount = 0;
-                  if ((Control.ModifierKeys & Keys.Control) == Keys.Control)
-                  {
-                     direction = -1;
-                  }
-                  if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift)
-                  {
-                     pixelAmount = 1;
-                  }
-                  advanceOffset(gv, direction, pixelAmount);
+                  int pixelAmount = (e.X + e.Y * gv.Width) / gv.PixScale;
+                  advanceOffset(gv, 1, pixelAmount);
                   break;
                case System.Windows.Forms.MouseButtons.Right:
                   rightClickGV = gv;
@@ -745,13 +717,23 @@ namespace Texture64
       {
          if (hoverGV != null)
          {
+            int pixelAmount = 0;
             int rowAmount = 4;
             if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift)
             {
+               rowAmount = 0;
+               pixelAmount = 1;
+            }
+            else if ((Control.ModifierKeys & Keys.Alt) == Keys.Alt)
+            {
                rowAmount = 1;
             }
+            else if ((Control.ModifierKeys & Keys.Control) == Keys.Control)
+            {
+               rowAmount = hoverGV.GetPixelHeight();
+            }
             int direction = -Math.Sign(e.Delta);
-            int pixelAmount = rowAmount * hoverGV.GetPixelWidth();
+            pixelAmount += rowAmount * hoverGV.GetPixelWidth();
             advanceOffset(hoverGV, direction, pixelAmount);
          }
       }
