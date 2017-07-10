@@ -129,7 +129,9 @@ namespace Texture64
       {
          if (extPaletteChanged || fileDataChanged)
          {
-            DialogResult result = MessageBox.Show("Save Current Changes?", "Confirm Save", MessageBoxButtons.YesNoCancel);
+            string filename = Path.GetFileName(savePath);
+            string message = String.Format("Save file \"{0}\" ?", filename);
+            DialogResult result = MessageBox.Show(message, "Save", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
             switch (result)
             {
                case DialogResult.Yes:
@@ -440,7 +442,10 @@ namespace Texture64
       {
          if (validDragData)
          {
-            readData(lastFilename);
+            if (!NeedsSaveCancel())
+            {
+               readData(lastFilename);
+            }
          }
       }
 
