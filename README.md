@@ -1,10 +1,10 @@
 # Texture64
 N64 texture ripper and editor
 
-![ScreenShot](https://i.imgur.com/g8H8IVc.png "RGBA16 SM64 HUD Elements - Win7")
-![ScreenShot](https://i.imgur.com/hCGskoi.png "CI8 MK64 Bombs - Linux")
+![Win7 Screenshot](https://i.imgur.com/g8H8IVc.png "RGBA16 SM64 HUD Elements - Win7")
+![Linux Screenshot](https://i.imgur.com/hCGskoi.png "CI8 MK64 Bombs - Linux")
 
-## Current Features
+## Features
 * Export or import N64 textures of the following formats:
    * RGBA16
    * RGBA32
@@ -36,6 +36,14 @@ N64 texture ripper and editor
 * Enable "External Palette" to use different file for CI palette
 
 ### Changelog ###
+
+0.1: Initial release
+* Improve IA4 color scaling
+* Add checkbox for external palette and write to palette file when saving
+* Add save confirmation dialog during close/open
+* Add keyboard shortcuts for toolbar buttons
+* Add Copy to Clipboard context menu option and Ctrl-V paste shortcut
+* Change mouse click and mouse wheel functionality
 
 0.0.3: Beta test 3 release
 * Add right-click context menu for exporting and setting palette offset
