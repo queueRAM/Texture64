@@ -77,6 +77,20 @@ namespace Texture64
          }
       }
 
+      private bool pasteImage()
+      {
+         if (Clipboard.ContainsImage())
+         {
+            Bitmap bm = Clipboard.GetImage() as Bitmap;
+            if (bm != null)
+            {
+               insertImage(bm);
+               return true;
+            }
+         }
+         return false;
+      }
+
       protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
       {
          switch (keyData)
@@ -93,6 +107,13 @@ namespace Texture64
             case (Keys.Control | Keys.S):
                toolStripSave.PerformClick();
                return true;
+            case (Keys.Control | Keys.V):
+               // let Ctrl-V pass through if no image data
+               if (pasteImage())
+               {
+                  return true;
+               }
+               break;
             case (Keys.Shift | Keys.F1):
                new TestForm().ShowDialog();
                return true;
@@ -267,7 +288,8 @@ namespace Texture64
 
          if (dresult == DialogResult.OK)
          {
-            insertImageFile(ofd.FileName);
+            Bitmap bm = new Bitmap(ofd.FileName);
+            insertImage(bm);
             toolStripSave.Enabled = true;
          }
       }
@@ -766,41 +788,43 @@ namespace Texture64
          clickedGV = null;
       }
 
-      private void insertImageFile(string imageFile)
+      private void insertImage(Bitmap bm)
       {
-         Bitmap bm = new Bitmap(imageFile);
-         byte[] imageData = null, paletteData = null;
-
-         N64Graphics.Convert(ref imageData, ref paletteData, viewerCodec, bm);
-
-         int copyLength = Math.Min(imageData.Length, romData.Length - offset);
-         Array.Copy(imageData, 0, romData, offset, copyLength);
-         fileDataChanged = true;
-
-         if (paletteData != null)
+         if (romData != null)
          {
-            byte[] paletteDest;
-            if (separatePalette && extPaletteData != null)
-            {
-               extPaletteChanged = true;
-               paletteDest = extPaletteData;
-            }
-            else
-            {
-               paletteDest = romData;
-            }
-            int palOffset = (int)numericPalette.Value;
-            copyLength = Math.Min(paletteData.Length, paletteDest.Length - palOffset);
-            if (copyLength > 0)
-            {
-               Array.Copy(paletteData, 0, paletteDest, palOffset, copyLength);
-               UpdatePalette();
-            }
-         }
+            byte[] imageData = null, paletteData = null;
 
-         foreach (GraphicsViewer gv in viewers)
-         {
-            gv.Invalidate();
+            N64Graphics.Convert(ref imageData, ref paletteData, viewerCodec, bm);
+
+            int copyLength = Math.Min(imageData.Length, romData.Length - offset);
+            Array.Copy(imageData, 0, romData, offset, copyLength);
+            fileDataChanged = true;
+
+            if (paletteData != null)
+            {
+               byte[] paletteDest;
+               if (separatePalette && extPaletteData != null)
+               {
+                  extPaletteChanged = true;
+                  paletteDest = extPaletteData;
+               }
+               else
+               {
+                  paletteDest = romData;
+               }
+               int palOffset = (int)numericPalette.Value;
+               copyLength = Math.Min(paletteData.Length, paletteDest.Length - palOffset);
+               if (copyLength > 0)
+               {
+                  Array.Copy(paletteData, 0, paletteDest, palOffset, copyLength);
+                  UpdatePalette();
+               }
+            }
+
+            foreach (GraphicsViewer gv in viewers)
+            {
+               gv.Invalidate();
+            }
          }
       }
 
