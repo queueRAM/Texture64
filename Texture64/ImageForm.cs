@@ -630,7 +630,7 @@ namespace Texture64
             switch (e.Button)
             {
                case System.Windows.Forms.MouseButtons.Left:
-                  int pixelAmount = (e.X + e.Y * gv.Width) / gv.PixScale;
+                  int pixelAmount = (e.X + e.Y * gv.GetPixelWidth()) / gv.PixScale;
                   advanceOffset(gv, 1, pixelAmount);
                   break;
                case System.Windows.Forms.MouseButtons.Right:
