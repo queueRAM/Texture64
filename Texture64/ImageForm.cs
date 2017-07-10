@@ -198,12 +198,15 @@ namespace Texture64
          savePath = filePath;
          numericOffset.Maximum = romData.Length - 1;
          vScrollBarOffset.Maximum = romData.Length - 1;
+         numericOffset.Value = 0;
          if (!separatePalette)
          {
             paletteData = romData;
             numericPalette.Enabled = true;
             numericPalette.Maximum = paletteData.Length;
             numericSplitOffset.Maximum = paletteData.Length;
+            numericPalette.Value = 0;
+            numericSplitOffset.Value = 0;
          }
          foreach (GraphicsViewer gv in viewers)
          {
@@ -423,6 +426,19 @@ namespace Texture64
          {
             paletteData = romData;
          }
+         if (paletteData != null)
+         {
+            if (numericPalette.Value >= paletteData.Length)
+            {
+               numericPalette.Value = paletteData.Length - 1;
+            }
+            if (numericSplitOffset.Value >= paletteData.Length)
+            {
+               numericSplitOffset.Value = paletteData.Length - 1;
+            }
+            numericPalette.Maximum = paletteData.Length - 1;
+            numericSplitOffset.Maximum = paletteData.Length - 1;
+         }
          UpdatePalette();
       }
 
@@ -545,6 +561,8 @@ namespace Texture64
                paletteFileLabel.Text = Path.GetFileName(ofd.FileName);
                savePalettePath = ofd.FileName;
                extPaletteChanged = false;
+               numericPalette.Value = 0;
+               numericSplitOffset.Value = 0;
             }
          }
       }
