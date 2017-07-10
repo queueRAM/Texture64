@@ -245,6 +245,11 @@ namespace Texture64
                toolStripInsert.Enabled = true;
                fileDataChanged = false;
                toolStripSave.Enabled = false;
+               foreach (GraphicsViewer gv in viewers)
+               {
+                  gv.Enabled = true;
+               }
+               gviewPalette.Enabled = true;
             }
          }
       }
@@ -571,9 +576,11 @@ namespace Texture64
 
          if (dResult == DialogResult.OK)
          {
-            Bitmap bitmap = new Bitmap(gv.PixSize.Width, gv.PixSize.Height, PixelFormat.Format32bppArgb);
+            int width = gv.GetPixelWidth();
+            int height = gv.GetPixelHeight();
+            Bitmap bitmap = new Bitmap(width, height, PixelFormat.Format32bppArgb);
             Graphics g = Graphics.FromImage(bitmap);
-            N64Graphics.RenderTexture(g, romData, curPalette, offset, gv.PixSize.Width, gv.GetPixelHeight(), 1, gv.Codec);
+            N64Graphics.RenderTexture(g, romData, curPalette, offset, width, height, 1, gv.Codec);
             switch (sfd.FilterIndex)
             {
                case 1: bitmap.Save(sfd.FileName, ImageFormat.Png); break;
@@ -815,6 +822,19 @@ namespace Texture64
          if (rightClickGV != null)
          {
             exportTexture(rightClickGV);
+         }
+      }
+
+      private void gvCopy_Click(object sender, EventArgs e)
+      {
+         if (rightClickGV != null)
+         {
+            int width = rightClickGV.GetPixelWidth();
+            int height = rightClickGV.GetPixelHeight();
+            Bitmap bitmap = new Bitmap(width, height, PixelFormat.Format32bppArgb);
+            Graphics g = Graphics.FromImage(bitmap);
+            N64Graphics.RenderTexture(g, romData, curPalette, offset, width, height, 1, rightClickGV.Codec);
+            Clipboard.SetImage(bitmap);
          }
       }
 
