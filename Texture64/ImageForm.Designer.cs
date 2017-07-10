@@ -66,7 +66,6 @@
          this.label5 = new System.Windows.Forms.Label();
          this.splitPaletteCheck = new System.Windows.Forms.CheckBox();
          this.label4 = new System.Windows.Forms.Label();
-         this.gviewPalette = new Texture64.GraphicsViewer();
          this.gvContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
          this.gvExport = new System.Windows.Forms.ToolStripMenuItem();
          this.gvSetPaletteBefore = new System.Windows.Forms.ToolStripMenuItem();
@@ -85,6 +84,14 @@
          this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
          this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
          this.panel1 = new System.Windows.Forms.Panel();
+         this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+         this.groupBoxColor = new System.Windows.Forms.GroupBox();
+         this.labelColorA = new System.Windows.Forms.Label();
+         this.labelColorB = new System.Windows.Forms.Label();
+         this.labelColorG = new System.Windows.Forms.Label();
+         this.labelColorR = new System.Windows.Forms.Label();
+         this.labelColorHex = new System.Windows.Forms.Label();
+         this.pictureBoxColor = new System.Windows.Forms.PictureBox();
          this.graphicsViewerCustom = new Texture64.GraphicsViewer();
          this.graphicsViewer8x16 = new Texture64.GraphicsViewer();
          this.graphicsViewer64x64 = new Texture64.GraphicsViewer();
@@ -94,14 +101,7 @@
          this.graphicsViewer16x32 = new Texture64.GraphicsViewer();
          this.graphicsViewer16x16 = new Texture64.GraphicsViewer();
          this.graphicsViewer32x32 = new Texture64.GraphicsViewer();
-         this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
-         this.groupBoxColor = new System.Windows.Forms.GroupBox();
-         this.labelColorA = new System.Windows.Forms.Label();
-         this.labelColorB = new System.Windows.Forms.Label();
-         this.labelColorG = new System.Windows.Forms.Label();
-         this.labelColorR = new System.Windows.Forms.Label();
-         this.labelColorHex = new System.Windows.Forms.Label();
-         this.pictureBoxColor = new System.Windows.Forms.PictureBox();
+         this.gviewPalette = new Texture64.GraphicsViewer();
          this.graphicsViewerMap = new Texture64.GraphicsViewer();
          this.statusStrip1.SuspendLayout();
          this.toolStrip1.SuspendLayout();
@@ -182,8 +182,9 @@
          this.toolStripOpen.Image = ((System.Drawing.Image)(resources.GetObject("toolStripOpen.Image")));
          this.toolStripOpen.ImageTransparentColor = System.Drawing.Color.Magenta;
          this.toolStripOpen.Name = "toolStripOpen";
-         this.toolStripOpen.Size = new System.Drawing.Size(56, 22);
-         this.toolStripOpen.Text = "&Open";
+         this.toolStripOpen.Size = new System.Drawing.Size(65, 22);
+         this.toolStripOpen.Text = "&Open...";
+         this.toolStripOpen.ToolTipText = "Open... [Ctrl-O]";
          this.toolStripOpen.Click += new System.EventHandler(this.toolStripOpen_Click);
          // 
          // toolStripInsert
@@ -194,6 +195,7 @@
          this.toolStripInsert.Name = "toolStripInsert";
          this.toolStripInsert.Size = new System.Drawing.Size(65, 22);
          this.toolStripInsert.Text = "&Insert...";
+         this.toolStripInsert.ToolTipText = "Insert... [Ctrl-I]";
          this.toolStripInsert.Click += new System.EventHandler(this.toolStripInsert_Click);
          // 
          // toolStripSave
@@ -204,6 +206,7 @@
          this.toolStripSave.Name = "toolStripSave";
          this.toolStripSave.Size = new System.Drawing.Size(51, 22);
          this.toolStripSave.Text = "&Save";
+         this.toolStripSave.ToolTipText = "Save [Ctrl-S]";
          this.toolStripSave.Click += new System.EventHandler(this.toolStripSave_Click);
          // 
          // toolStripSeparator1
@@ -273,6 +276,7 @@
          this.bgColorButton.Name = "bgColorButton";
          this.bgColorButton.Size = new System.Drawing.Size(74, 22);
          this.bgColorButton.Text = "&BG Color";
+         this.bgColorButton.ToolTipText = "BG Color [Ctrl-B]";
          this.bgColorButton.Click += new System.EventHandler(this.bgColorButton_Click);
          // 
          // toolStripSeparator3
@@ -288,6 +292,7 @@
          this.toolStripAbout.Name = "toolStripAbout";
          this.toolStripAbout.Size = new System.Drawing.Size(23, 22);
          this.toolStripAbout.Text = "About";
+         this.toolStripAbout.ToolTipText = "About [F1]";
          this.toolStripAbout.Click += new System.EventHandler(this.toolStripAbout_Click);
          // 
          // numericUpDownWidth
@@ -529,21 +534,6 @@
          this.label4.TabIndex = 1;
          this.label4.Text = "Offset: 0x";
          // 
-         // gviewPalette
-         // 
-         this.gviewPalette.AutoPixelSize = true;
-         this.gviewPalette.Codec = Texture64.N64Codec.RGBA16;
-         this.gviewPalette.ContextMenuStrip = this.gvContextMenuStrip;
-         this.gviewPalette.Location = new System.Drawing.Point(6, 43);
-         this.gviewPalette.Name = "gviewPalette";
-         this.gviewPalette.PixScale = 8;
-         this.gviewPalette.PixSize = new System.Drawing.Size(16, 16);
-         this.gviewPalette.Size = new System.Drawing.Size(128, 128);
-         this.gviewPalette.TabIndex = 0;
-         this.gviewPalette.MouseDown += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseDown);
-         this.gviewPalette.MouseMove += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseMove);
-         this.gviewPalette.MouseUp += new System.Windows.Forms.MouseEventHandler(this.gviewPalette_MouseUp);
-         // 
          // gvContextMenuStrip
          // 
          this.gvContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -746,6 +736,76 @@
          this.panel1.Size = new System.Drawing.Size(185, 31);
          this.panel1.TabIndex = 36;
          // 
+         // groupBoxColor
+         // 
+         this.groupBoxColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+         this.groupBoxColor.Controls.Add(this.labelColorA);
+         this.groupBoxColor.Controls.Add(this.labelColorB);
+         this.groupBoxColor.Controls.Add(this.labelColorG);
+         this.groupBoxColor.Controls.Add(this.labelColorR);
+         this.groupBoxColor.Controls.Add(this.labelColorHex);
+         this.groupBoxColor.Controls.Add(this.pictureBoxColor);
+         this.groupBoxColor.Location = new System.Drawing.Point(437, 25);
+         this.groupBoxColor.Name = "groupBoxColor";
+         this.groupBoxColor.Size = new System.Drawing.Size(137, 135);
+         this.groupBoxColor.TabIndex = 36;
+         this.groupBoxColor.TabStop = false;
+         this.groupBoxColor.Text = "Color Info:";
+         // 
+         // labelColorA
+         // 
+         this.labelColorA.AutoSize = true;
+         this.labelColorA.Location = new System.Drawing.Point(7, 116);
+         this.labelColorA.Name = "labelColorA";
+         this.labelColorA.Size = new System.Drawing.Size(17, 13);
+         this.labelColorA.TabIndex = 5;
+         this.labelColorA.Text = "A:";
+         // 
+         // labelColorB
+         // 
+         this.labelColorB.AutoSize = true;
+         this.labelColorB.Location = new System.Drawing.Point(7, 103);
+         this.labelColorB.Name = "labelColorB";
+         this.labelColorB.Size = new System.Drawing.Size(17, 13);
+         this.labelColorB.TabIndex = 4;
+         this.labelColorB.Text = "B:";
+         // 
+         // labelColorG
+         // 
+         this.labelColorG.AutoSize = true;
+         this.labelColorG.Location = new System.Drawing.Point(7, 89);
+         this.labelColorG.Name = "labelColorG";
+         this.labelColorG.Size = new System.Drawing.Size(18, 13);
+         this.labelColorG.TabIndex = 3;
+         this.labelColorG.Text = "G:";
+         // 
+         // labelColorR
+         // 
+         this.labelColorR.AutoSize = true;
+         this.labelColorR.Location = new System.Drawing.Point(7, 76);
+         this.labelColorR.Name = "labelColorR";
+         this.labelColorR.Size = new System.Drawing.Size(18, 13);
+         this.labelColorR.TabIndex = 2;
+         this.labelColorR.Text = "R:";
+         // 
+         // labelColorHex
+         // 
+         this.labelColorHex.AutoSize = true;
+         this.labelColorHex.Location = new System.Drawing.Point(7, 59);
+         this.labelColorHex.Name = "labelColorHex";
+         this.labelColorHex.Size = new System.Drawing.Size(29, 13);
+         this.labelColorHex.TabIndex = 1;
+         this.labelColorHex.Text = "Hex:";
+         // 
+         // pictureBoxColor
+         // 
+         this.pictureBoxColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+         this.pictureBoxColor.Location = new System.Drawing.Point(7, 20);
+         this.pictureBoxColor.Name = "pictureBoxColor";
+         this.pictureBoxColor.Size = new System.Drawing.Size(32, 32);
+         this.pictureBoxColor.TabIndex = 0;
+         this.pictureBoxColor.TabStop = false;
+         // 
          // graphicsViewerCustom
          // 
          this.graphicsViewerCustom.AutoPixelSize = false;
@@ -904,75 +964,20 @@
          this.graphicsViewer32x32.MouseMove += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseMove);
          this.graphicsViewer32x32.MouseUp += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseUp);
          // 
-         // groupBoxColor
+         // gviewPalette
          // 
-         this.groupBoxColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-         this.groupBoxColor.Controls.Add(this.labelColorA);
-         this.groupBoxColor.Controls.Add(this.labelColorB);
-         this.groupBoxColor.Controls.Add(this.labelColorG);
-         this.groupBoxColor.Controls.Add(this.labelColorR);
-         this.groupBoxColor.Controls.Add(this.labelColorHex);
-         this.groupBoxColor.Controls.Add(this.pictureBoxColor);
-         this.groupBoxColor.Location = new System.Drawing.Point(437, 25);
-         this.groupBoxColor.Name = "groupBoxColor";
-         this.groupBoxColor.Size = new System.Drawing.Size(137, 135);
-         this.groupBoxColor.TabIndex = 36;
-         this.groupBoxColor.TabStop = false;
-         this.groupBoxColor.Text = "Color Info:";
-         // 
-         // labelColorA
-         // 
-         this.labelColorA.AutoSize = true;
-         this.labelColorA.Location = new System.Drawing.Point(7, 116);
-         this.labelColorA.Name = "labelColorA";
-         this.labelColorA.Size = new System.Drawing.Size(17, 13);
-         this.labelColorA.TabIndex = 5;
-         this.labelColorA.Text = "A:";
-         // 
-         // labelColorB
-         // 
-         this.labelColorB.AutoSize = true;
-         this.labelColorB.Location = new System.Drawing.Point(7, 103);
-         this.labelColorB.Name = "labelColorB";
-         this.labelColorB.Size = new System.Drawing.Size(17, 13);
-         this.labelColorB.TabIndex = 4;
-         this.labelColorB.Text = "B:";
-         // 
-         // labelColorG
-         // 
-         this.labelColorG.AutoSize = true;
-         this.labelColorG.Location = new System.Drawing.Point(7, 89);
-         this.labelColorG.Name = "labelColorG";
-         this.labelColorG.Size = new System.Drawing.Size(18, 13);
-         this.labelColorG.TabIndex = 3;
-         this.labelColorG.Text = "G:";
-         // 
-         // labelColorR
-         // 
-         this.labelColorR.AutoSize = true;
-         this.labelColorR.Location = new System.Drawing.Point(7, 76);
-         this.labelColorR.Name = "labelColorR";
-         this.labelColorR.Size = new System.Drawing.Size(18, 13);
-         this.labelColorR.TabIndex = 2;
-         this.labelColorR.Text = "R:";
-         // 
-         // labelColorHex
-         // 
-         this.labelColorHex.AutoSize = true;
-         this.labelColorHex.Location = new System.Drawing.Point(7, 59);
-         this.labelColorHex.Name = "labelColorHex";
-         this.labelColorHex.Size = new System.Drawing.Size(29, 13);
-         this.labelColorHex.TabIndex = 1;
-         this.labelColorHex.Text = "Hex:";
-         // 
-         // pictureBoxColor
-         // 
-         this.pictureBoxColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-         this.pictureBoxColor.Location = new System.Drawing.Point(7, 20);
-         this.pictureBoxColor.Name = "pictureBoxColor";
-         this.pictureBoxColor.Size = new System.Drawing.Size(32, 32);
-         this.pictureBoxColor.TabIndex = 0;
-         this.pictureBoxColor.TabStop = false;
+         this.gviewPalette.AutoPixelSize = true;
+         this.gviewPalette.Codec = Texture64.N64Codec.RGBA16;
+         this.gviewPalette.ContextMenuStrip = this.gvContextMenuStrip;
+         this.gviewPalette.Location = new System.Drawing.Point(6, 43);
+         this.gviewPalette.Name = "gviewPalette";
+         this.gviewPalette.PixScale = 8;
+         this.gviewPalette.PixSize = new System.Drawing.Size(16, 16);
+         this.gviewPalette.Size = new System.Drawing.Size(128, 128);
+         this.gviewPalette.TabIndex = 0;
+         this.gviewPalette.MouseDown += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseDown);
+         this.gviewPalette.MouseMove += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseMove);
+         this.gviewPalette.MouseUp += new System.Windows.Forms.MouseEventHandler(this.gviewPalette_MouseUp);
          // 
          // graphicsViewerMap
          // 
@@ -1009,6 +1014,7 @@
          this.Controls.Add(this.toolStrip1);
          this.Controls.Add(this.statusStrip1);
          this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+         this.KeyPreview = true;
          this.MinimumSize = new System.Drawing.Size(500, 524);
          this.Name = "ImageForm";
          this.Text = "Texture64";

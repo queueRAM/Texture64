@@ -77,6 +77,32 @@ namespace Texture64
          }
       }
 
+      protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+      {
+         switch (keyData)
+         {
+            case (Keys.Control | Keys.B):
+               bgColorButton.PerformClick();
+               return true;
+            case (Keys.Control | Keys.I):
+               toolStripInsert.PerformClick();
+               return true;
+            case (Keys.Control | Keys.O):
+               toolStripOpen.PerformClick();
+               return true;
+            case (Keys.Control | Keys.S):
+               toolStripSave.PerformClick();
+               return true;
+            case (Keys.Shift | Keys.F1):
+               new TestForm().ShowDialog();
+               return true;
+            case (Keys.F1):
+               toolStripAbout.PerformClick();
+               return true;
+         }
+         return base.ProcessCmdKey(ref msg, keyData);
+      }
+
       private void ImageForm_FormClosing(object sender, FormClosingEventArgs e)
       {
          if (NeedsSaveCancel())
