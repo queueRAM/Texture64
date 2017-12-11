@@ -3,6 +3,7 @@
 namespace Texture64
 {
    public enum N64Codec { RGBA16, RGBA32, IA16, IA8, IA4, I8, I4, CI8, CI4, ONEBPP };
+   public enum N64IMode { AlphaCopyIntensity, AlphaBinary, AlphaOne };
 
    class N64Graphics
    {
@@ -84,18 +85,32 @@ namespace Texture64
          return Color.FromArgb(a, i, i, i);
       }
 
-      public static Color I8Color(byte[] data, int pixOffset)
+      public static Color I8Color(byte[] data, int pixOffset, N64IMode mode = N64IMode.AlphaCopyIntensity)
       {
-         int ia = data[pixOffset];
-         return Color.FromArgb(ia, ia, ia, ia);
+         int i = data[pixOffset];
+         int a = i;
+         switch (mode)
+         {
+            case N64IMode.AlphaBinary: a = (i == 0) ? 0 : 0xFF; break;
+            case N64IMode.AlphaCopyIntensity: a = i; break;
+            case N64IMode.AlphaOne: a = 0xFF; break;
+         }
+         return Color.FromArgb(a, i, i, i);
       }
 
-      public static Color I4Color(byte[] data, int pixOffset, int nibble)
+      public static Color I4Color(byte[] data, int pixOffset, int nibble, N64IMode mode = N64IMode.AlphaCopyIntensity)
       {
          int shift = (1 - nibble) * 4;
-         int ia = (data[pixOffset] >> shift) & 0xF;
-         ia *= 0x11;
-         return Color.FromArgb(ia, ia, ia, ia);
+         int i = (data[pixOffset] >> shift) & 0xF;
+         i *= 0x11;
+         int a = i;
+         switch (mode)
+         {
+             case N64IMode.AlphaBinary: a = (i == 0) ? 0 : 0xFF; break;
+             case N64IMode.AlphaCopyIntensity: a = i; break;
+             case N64IMode.AlphaOne: a = 0xFF; break;
+         }
+         return Color.FromArgb(a, i, i, i);
       }
 
       public static Color CI8Color(byte[] data, byte[] palette, int pixOffset)
@@ -165,7 +180,7 @@ namespace Texture64
          return "unk";
       }
 
-      public static Color MakeColor(byte[] data, byte[] palette, int offset, int select, N64Codec codec)
+      public static Color MakeColor(byte[] data, byte[] palette, int offset, int select, N64Codec codec, N64IMode mode)
       {
          Color color;
          switch (codec)
@@ -186,10 +201,10 @@ namespace Texture64
                color = IA4Color(data, offset, select);
                break;
             case N64Codec.I8:
-               color = I8Color(data, offset);
+               color = I8Color(data, offset, mode);
                break;
             case N64Codec.I4:
-               color = I4Color(data, offset, select);
+               color = I4Color(data, offset, select, mode);
                break;
             case N64Codec.CI8:
                color = CI8Color(data, palette, offset);
@@ -207,7 +222,7 @@ namespace Texture64
          return color;
       }
 
-      public static void RenderTexture(Graphics g, byte[] data, byte[] palette, int offset, int width, int height, int scale, N64Codec codec)
+      public static void RenderTexture(Graphics g, byte[] data, byte[] palette, int offset, int width, int height, int scale, N64Codec codec, N64IMode mode)
       {
          Brush brush;
          for (int h = 0; h < height; h++)
@@ -242,7 +257,7 @@ namespace Texture64
                pixOffset += offset;
                if (data.Length > pixOffset + bytesPerPix - 1)
                {
-                  brush = new SolidBrush(MakeColor(data, palette, pixOffset, select, codec));
+                  brush = new SolidBrush(MakeColor(data, palette, pixOffset, select, codec, mode));
                   g.FillRectangle(brush, w * scale, h * scale, scale, scale);
                }
             }

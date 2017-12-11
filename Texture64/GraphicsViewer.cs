@@ -27,6 +27,8 @@ namespace Texture64
 
       public N64Codec Codec { get; set; }
 
+      public N64IMode Mode { get; set; }
+
       public GraphicsViewer()
       {
          InitializeComponent();
@@ -68,7 +70,7 @@ namespace Texture64
       {
          if (data != null)
          {
-            N64Graphics.RenderTexture(e.Graphics, data, palette, offset, GetPixelWidth(), GetPixelHeight(), PixScale, Codec);
+            N64Graphics.RenderTexture(e.Graphics, data, palette, offset, GetPixelWidth(), GetPixelHeight(), PixScale, Codec, Mode);
          }
          e.Graphics.DrawRectangle(new Pen(Color.Black), 0, 0, GetPixelWidth() * PixScale - 1, GetPixelHeight() * PixScale - 1);
       }

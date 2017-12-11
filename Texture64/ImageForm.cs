@@ -28,6 +28,7 @@ namespace Texture64
       private bool separatePalette = false;
 
       private N64Codec viewerCodec = N64Codec.RGBA16;
+      private N64IMode viewerMode = N64IMode.AlphaCopyIntensity;
 
       // drag and drop data
       private string lastFilename;
@@ -64,6 +65,7 @@ namespace Texture64
          gviewPalette.Codec = N64Codec.RGBA16;
 
          toolStripCodec.SelectedIndex = 0;
+         toolStripAlpha.SelectedIndex = 0;
          toolStripScale.SelectedIndex = 1;
 
          // bind the value of the scrollbar to the value of the offset box
@@ -336,6 +338,26 @@ namespace Texture64
                   break;
             }
             gviewPalette.Invalidate();
+            toolStripAlpha.Enabled = viewerCodec == N64Codec.I8 || viewerCodec == N64Codec.I4;
+         }
+      }
+
+      private void toolStripAlpha_SelectedIndexChanged(object sender, EventArgs e)
+      {
+         N64IMode prevMode = viewerMode;
+         switch (toolStripAlpha.SelectedIndex)
+         {
+            case 0: viewerMode = N64IMode.AlphaCopyIntensity; break;
+            case 1: viewerMode = N64IMode.AlphaBinary; break;
+            case 2: viewerMode = N64IMode.AlphaOne; break;
+         }
+         if (prevMode != viewerMode)
+         {
+            foreach (GraphicsViewer gv in viewers)
+            {
+               gv.Mode = viewerMode;
+               gv.Invalidate();
+            }
          }
       }
 
@@ -625,7 +647,7 @@ namespace Texture64
             int height = gv.GetPixelHeight();
             Bitmap bitmap = new Bitmap(width, height, PixelFormat.Format32bppArgb);
             Graphics g = Graphics.FromImage(bitmap);
-            N64Graphics.RenderTexture(g, romData, curPalette, offset, width, height, 1, gv.Codec);
+            N64Graphics.RenderTexture(g, romData, curPalette, offset, width, height, 1, gv.Codec, gv.Mode);
             switch (sfd.FilterIndex)
             {
                case 1: bitmap.Save(sfd.FileName, ImageFormat.Png); break;
@@ -721,7 +743,7 @@ namespace Texture64
             }
             if (byteOffset >= 0 && (byteOffset + nibblesPerPix / 2) <= colorData.Length)
             {
-               Color c = N64Graphics.MakeColor(colorData, curPalette, byteOffset, select, gv.Codec);
+               Color c = N64Graphics.MakeColor(colorData, curPalette, byteOffset, select, gv.Codec, gv.Mode);
                int value = 0;
                for (int i = 0; i < (nibblesPerPix + 1) / 2; i++)
                {
@@ -862,7 +884,7 @@ namespace Texture64
             int height = rightClickGV.GetPixelHeight();
             Bitmap bitmap = new Bitmap(width, height, PixelFormat.Format32bppArgb);
             Graphics g = Graphics.FromImage(bitmap);
-            N64Graphics.RenderTexture(g, romData, curPalette, offset, width, height, 1, rightClickGV.Codec);
+            N64Graphics.RenderTexture(g, romData, curPalette, offset, width, height, 1, rightClickGV.Codec, rightClickGV.Mode);
             Clipboard.SetImage(bitmap);
          }
       }
@@ -880,6 +902,5 @@ namespace Texture64
          setPaletteOffset(offset + paletteBytes);
          checkExtPalette.Checked = false;
       }
-
-   }
+    }
 }

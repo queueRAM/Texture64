@@ -130,10 +130,10 @@ namespace Texture64
          Bitmap b = new Bitmap(width, height, PixelFormat.Format32bppArgb);
          Graphics g = Graphics.FromImage(b);
          
-         N64Graphics.RenderTexture(g, test, pal, 0, width, height, 1, testCodec);
+         N64Graphics.RenderTexture(g, test, pal, 0, width, height, 1, testCodec, N64IMode.AlphaCopyIntensity);
          N64Graphics.Convert(ref result, ref resultPal, testCodec, b);
          Bitmap bres = new Bitmap(width, height, PixelFormat.Format32bppArgb);
-         N64Graphics.RenderTexture(Graphics.FromImage(bres), result, resultPal, 0, width, height, 1, testCodec);
+         N64Graphics.RenderTexture(Graphics.FromImage(bres), result, resultPal, 0, width, height, 1, testCodec, N64IMode.AlphaCopyIntensity);
          for (int i = 0; i < result.Length; i++)
          {
             if (test[i] != result[i])
