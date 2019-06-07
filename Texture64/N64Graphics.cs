@@ -137,8 +137,8 @@ namespace Texture64
       public static Color BPPColor(byte[] data, int pixOffset, int bit)
       {
          int i, a;
-         int val = (data[pixOffset] >> bit) & 0x1;
-         i = a = 0xFF * val;
+         int val = (data[pixOffset] >> (7 - bit)) & 0x1;
+         i = a = val == 0 ? 0x00 : 0xFF;
          return Color.FromArgb(a, i, i, i);
       }
 
