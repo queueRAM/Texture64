@@ -75,7 +75,7 @@ namespace Texture64
          string[] args = Environment.GetCommandLineArgs();
          if (args.Length > 1)
          {
-            readData(args[1]);
+            LoadFile(args[1]);
          }
       }
 
@@ -182,7 +182,7 @@ namespace Texture64
          }
       }
 
-      private void readData(String filePath)
+      private void LoadFile(String filePath)
       {
          basename = Path.GetFileNameWithoutExtension(filePath);
          basename = basename.TrimStart(new char[] { '0' });
@@ -222,6 +222,14 @@ namespace Texture64
          statusStripSize.ForeColor = Color.Black;
          numericOffset.Enabled = true;
          vScrollBarOffset.Enabled = true;
+         toolStripInsert.Enabled = true;
+         fileDataChanged = false;
+         toolStripSave.Enabled = false;
+         foreach (GraphicsViewer gv in viewers)
+         {
+            gv.Enabled = true;
+         }
+         gviewPalette.Enabled = true;
       }
 
       private void UpdatePalette()
@@ -271,15 +279,7 @@ namespace Texture64
 
             if (dresult == DialogResult.OK)
             {
-               readData(ofd.FileName);
-               toolStripInsert.Enabled = true;
-               fileDataChanged = false;
-               toolStripSave.Enabled = false;
-               foreach (GraphicsViewer gv in viewers)
-               {
-                  gv.Enabled = true;
-               }
-               gviewPalette.Enabled = true;
+               LoadFile(ofd.FileName);
             }
          }
       }
@@ -506,7 +506,7 @@ namespace Texture64
          {
             if (!NeedsSaveCancel())
             {
-               readData(lastFilename);
+               LoadFile(lastFilename);
             }
          }
       }
