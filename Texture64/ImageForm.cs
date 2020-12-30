@@ -86,7 +86,7 @@ namespace Texture64
             Bitmap bm = Clipboard.GetImage() as Bitmap;
             if (bm != null)
             {
-               insertImage(bm);
+               InsertImage(bm);
                return true;
             }
          }
@@ -182,6 +182,11 @@ namespace Texture64
          }
       }
 
+      private void DisplayFileSize(int size)
+      {
+         statusStripSize.Text = String.Format("Size: 0x{0:X}", size);
+      }
+
       private void LoadFile(String filePath)
       {
          basename = Path.GetFileNameWithoutExtension(filePath);
@@ -218,7 +223,7 @@ namespace Texture64
          UpdatePalette();
          statusStripFile.Text = String.Format("File: {0}", filePath);
          statusStripFile.ForeColor = Color.Black;
-         statusStripSize.Text = String.Format("Size: 0x{0:X}", romData.Length);
+         DisplayFileSize(romData.Length);
          statusStripSize.ForeColor = Color.Black;
          numericOffset.Enabled = true;
          vScrollBarOffset.Enabled = true;
@@ -296,7 +301,7 @@ namespace Texture64
          if (dresult == DialogResult.OK)
          {
             Bitmap bm = new Bitmap(ofd.FileName);
-            insertImage(bm);
+            InsertImage(bm);
             toolStripSave.Enabled = true;
          }
       }
@@ -830,7 +835,20 @@ namespace Texture64
          clickedGV = null;
       }
 
-      private void insertImage(Bitmap bm)
+      private bool ensureCapacity(ref byte[] outputData, byte[] inputData, int outOffset)
+      {
+         int insertEndOffset = outOffset + inputData.Length;
+         if (insertEndOffset > outputData.Length)
+         {
+            byte[] outputDataCopy = new byte[insertEndOffset];
+            Array.Copy(outputData, 0, outputDataCopy, 0, outputData.Length);
+            outputData = outputDataCopy;
+            return true;
+         }
+         return false;
+      }
+
+      private void InsertImage(Bitmap bm)
       {
          if (romData != null)
          {
@@ -838,33 +856,44 @@ namespace Texture64
 
             N64Graphics.Convert(ref imageData, ref paletteData, viewerCodec, bm);
 
-            int copyLength = Math.Min(imageData.Length, romData.Length - offset);
-            Array.Copy(imageData, 0, romData, offset, copyLength);
+            bool bufferChanged = ensureCapacity(ref romData, imageData, offset);
+            if (bufferChanged)
+            {
+               DisplayFileSize(romData.Length);
+            }
+            Array.Copy(imageData, 0, romData, offset, imageData.Length);
             fileDataChanged = true;
 
-            if (paletteData != null)
+            if (paletteData != null && paletteData.Length > 0)
             {
+               int palOffset = (int)numericPalette.Value;
                byte[] paletteDest;
                if (separatePalette && extPaletteData != null)
                {
+                  ensureCapacity(ref extPaletteData, paletteData, palOffset);
                   extPaletteChanged = true;
                   paletteDest = extPaletteData;
                }
                else
                {
+                  bufferChanged = ensureCapacity(ref romData, paletteData, palOffset);
+                  if (bufferChanged)
+                  {
+                     DisplayFileSize(romData.Length);
+                  }
                   paletteDest = romData;
                }
-               int palOffset = (int)numericPalette.Value;
-               copyLength = Math.Min(paletteData.Length, paletteDest.Length - palOffset);
-               if (copyLength > 0)
-               {
-                  Array.Copy(paletteData, 0, paletteDest, palOffset, copyLength);
-                  UpdatePalette();
-               }
+
+               Array.Copy(paletteData, 0, paletteDest, palOffset, paletteData.Length);
+               UpdatePalette();
             }
 
             foreach (GraphicsViewer gv in viewers)
             {
+               if (bufferChanged)
+               {
+                  gv.SetData(romData);
+               }
                gv.Invalidate();
             }
          }
