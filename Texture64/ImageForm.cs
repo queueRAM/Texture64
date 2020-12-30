@@ -139,10 +139,12 @@ namespace Texture64
          if (fileDataChanged)
          {
             SaveBinFile(savePath, romData, 0, romData.Length);
+            fileDataChanged = false;
          }
          if (extPaletteChanged)
          {
             SaveBinFile(savePalettePath, extPaletteData, 0, extPaletteData.Length);
+            extPaletteChanged = false;
          }
          toolStripSave.Enabled = false;
       }
