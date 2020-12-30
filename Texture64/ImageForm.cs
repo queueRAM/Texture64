@@ -216,8 +216,10 @@ namespace Texture64
             gv.Invalidate();
          }
          UpdatePalette();
-         statusStripFile.Text = String.Format("{0} [0x{1:X}]", filePath, romData.Length);
+         statusStripFile.Text = String.Format("File: {0}", filePath);
          statusStripFile.ForeColor = Color.Black;
+         statusStripSize.Text = String.Format("Size: 0x{0:X}", romData.Length);
+         statusStripSize.ForeColor = Color.Black;
          numericOffset.Enabled = true;
          vScrollBarOffset.Enabled = true;
       }

@@ -33,6 +33,7 @@
          this.statusStrip1 = new System.Windows.Forms.StatusStrip();
          this.statusStripFile = new System.Windows.Forms.ToolStripStatusLabel();
          this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+         this.statusStripSize = new System.Windows.Forms.ToolStripStatusLabel();
          this.vScrollBarOffset = new System.Windows.Forms.VScrollBar();
          this.toolStrip1 = new System.Windows.Forms.ToolStrip();
          this.toolStripOpen = new System.Windows.Forms.ToolStripButton();
@@ -128,7 +129,8 @@
          this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
          this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.statusStripFile,
-            this.toolStripStatusLabel1});
+            this.toolStripStatusLabel1,
+            this.statusStripSize});
          this.statusStrip1.Location = new System.Drawing.Point(0, 564);
          this.statusStrip1.Name = "statusStrip1";
          this.statusStrip1.Size = new System.Drawing.Size(616, 22);
@@ -137,15 +139,27 @@
          // 
          // statusStripFile
          // 
+         this.statusStripFile.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
          this.statusStripFile.Name = "statusStripFile";
          this.statusStripFile.Size = new System.Drawing.Size(25, 17);
          this.statusStripFile.Text = "File";
+         this.statusStripFile.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+         this.statusStripFile.ToolTipText = "File Path";
          // 
          // toolStripStatusLabel1
          // 
          this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-         this.toolStripStatusLabel1.Size = new System.Drawing.Size(576, 17);
+         this.toolStripStatusLabel1.Size = new System.Drawing.Size(518, 17);
          this.toolStripStatusLabel1.Spring = true;
+         // 
+         // statusStripSize
+         // 
+         this.statusStripSize.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+         this.statusStripSize.Name = "statusStripSize";
+         this.statusStripSize.Size = new System.Drawing.Size(27, 17);
+         this.statusStripSize.Text = "Size";
+         this.statusStripSize.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+         this.statusStripSize.ToolTipText = "File Size (hex)";
          // 
          // vScrollBarOffset
          // 
@@ -1197,6 +1211,7 @@
       private System.Windows.Forms.ToolStripMenuItem copyToolStripMenuItem;
       private System.Windows.Forms.ToolStripLabel toolStripLabel3;
       private System.Windows.Forms.ToolStripComboBox toolStripAlpha;
+      private System.Windows.Forms.ToolStripStatusLabel statusStripSize;
    }
 }
 
