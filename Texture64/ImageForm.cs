@@ -132,6 +132,47 @@ namespace Texture64
          {
             e.Cancel = true;
          }
+         else
+         {
+            Properties.Settings.Default.ImageFormState = this.WindowState;
+            if (this.WindowState == FormWindowState.Normal)
+            {
+               Properties.Settings.Default.ImageFormLocation = this.Location;
+               Properties.Settings.Default.ImageFormSize = this.Size;
+            }
+            else
+            {
+               Properties.Settings.Default.ImageFormLocation = this.RestoreBounds.Location;
+               Properties.Settings.Default.ImageFormSize = this.RestoreBounds.Size;
+            }
+            Properties.Settings.Default.Save();
+         }
+      }
+
+      private void ImageForm_Load(object sender, EventArgs e)
+      {
+         // attempt to load previous versions of the settings after updating app
+         if (Properties.Settings.Default.ImageFormSize.Width == 0)
+         {
+            Properties.Settings.Default.Upgrade();
+         }
+         // defaults are 0
+         if (Properties.Settings.Default.ImageFormSize.Width != 0 && Properties.Settings.Default.ImageFormSize.Height != 0)
+         {
+            // don't start minimized
+            if (Properties.Settings.Default.ImageFormState == FormWindowState.Minimized)
+            {
+               Properties.Settings.Default.ImageFormState = FormWindowState.Normal;
+            }
+            this.WindowState = Properties.Settings.Default.ImageFormState;
+            this.Location = Properties.Settings.Default.ImageFormLocation;
+            this.Size = Properties.Settings.Default.ImageFormSize;
+            // restore settings
+            SetBgColor(Properties.Settings.Default.BGColor);
+            colorDialogBg.Color = Properties.Settings.Default.BGColor;
+            numericUpDownWidth.Value = Properties.Settings.Default.CustomWidth;
+            numericUpDownHeight.Value = Properties.Settings.Default.CustomHeight;
+         }
       }
 
       private void SaveFiles()
@@ -386,11 +427,21 @@ namespace Texture64
          }
       }
 
+      private void SetBgColor(Color color)
+      {
+         foreach (GraphicsViewer gv in viewers)
+         {
+            gv.BackColor = color;
+         }
+         gviewPalette.BackColor = color;
+      }
+
       private void bgColorButton_Click(object sender, EventArgs e)
       {
          if (colorDialogBg.ShowDialog() == DialogResult.OK)
          {
-            BackColor = colorDialogBg.Color;
+            SetBgColor(colorDialogBg.Color);
+            Properties.Settings.Default.BGColor = colorDialogBg.Color;
          }
       }
 
@@ -426,13 +477,17 @@ namespace Texture64
 
       private void numericUpDownWidth_ValueChanged(object sender, EventArgs e)
       {
-         graphicsViewerCustom.PixSize = new Size((int)numericUpDownWidth.Value, graphicsViewerCustom.PixSize.Height);
+         int width = (int)numericUpDownWidth.Value;
+         Properties.Settings.Default.CustomWidth = width;
+         graphicsViewerCustom.PixSize = new Size(width, graphicsViewerCustom.PixSize.Height);
          graphicsViewerCustom.Refresh();
       }
 
       private void numericUpDownHeight_ValueChanged(object sender, EventArgs e)
       {
-         graphicsViewerCustom.PixSize = new Size(graphicsViewerCustom.PixSize.Width, (int)numericUpDownHeight.Value);
+         int height = (int)numericUpDownHeight.Value;
+         Properties.Settings.Default.CustomHeight = height;
+         graphicsViewerCustom.PixSize = new Size(graphicsViewerCustom.PixSize.Width, height);
          graphicsViewerCustom.Refresh();
       }
 
@@ -936,5 +991,5 @@ namespace Texture64
          setPaletteOffset(offset + paletteBytes);
          checkExtPalette.Checked = false;
       }
-    }
+   }
 }
