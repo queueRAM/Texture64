@@ -347,6 +347,7 @@ namespace Texture64
                   break;
             }
             gviewPalette.Invalidate();
+            groupBoxPalette.Visible = viewerCodec == N64Codec.CI8 || viewerCodec == N64Codec.CI4;
             toolStripAlpha.Enabled = viewerCodec == N64Codec.I8 || viewerCodec == N64Codec.I4;
          }
       }
