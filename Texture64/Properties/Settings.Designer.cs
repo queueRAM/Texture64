@@ -94,5 +94,17 @@ namespace Texture64.Properties {
                 this["ImageFormSize"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int ScaleIndex {
+            get {
+                return ((int)(this["ScaleIndex"]));
+            }
+            set {
+                this["ScaleIndex"] = value;
+            }
+        }
     }
 }

@@ -61,22 +61,6 @@ namespace Texture64
          viewers.Add(graphicsViewerCustom);
 
          this.MouseWheel += new MouseEventHandler(this.graphicsViewer_MouseWheel);
-
-         gviewPalette.Codec = N64Codec.RGBA16;
-
-         toolStripCodec.SelectedIndex = 0;
-         toolStripAlpha.SelectedIndex = 0;
-         toolStripScale.SelectedIndex = 1;
-
-         // bind the value of the scrollbar to the value of the offset box
-         numericOffset.DataBindings.Add("Value", vScrollBarOffset, "Value", false, DataSourceUpdateMode.OnPropertyChanged);
-
-         // handle arguments passed in the command line
-         string[] args = Environment.GetCommandLineArgs();
-         if (args.Length > 1)
-         {
-            LoadFile(args[1]);
-         }
       }
 
       private bool PasteImage()
@@ -171,6 +155,20 @@ namespace Texture64
             colorDialogBg.Color = Properties.Settings.Default.BGColor;
             numericUpDownWidth.Value = Properties.Settings.Default.CustomWidth;
             numericUpDownHeight.Value = Properties.Settings.Default.CustomHeight;
+            toolStripScale.SelectedIndex = Properties.Settings.Default.ScaleIndex;
+         }
+         toolStripCodec.SelectedIndex = 0;
+         toolStripAlpha.SelectedIndex = 0;
+         gviewPalette.Codec = N64Codec.RGBA16;
+
+         // bind the value of the scrollbar to the value of the offset box
+         numericOffset.DataBindings.Add("Value", vScrollBarOffset, "Value", false, DataSourceUpdateMode.OnPropertyChanged);
+
+         // handle arguments passed in the command line
+         string[] args = Environment.GetCommandLineArgs();
+         if (args.Length > 1)
+         {
+            LoadFile(args[1]);
          }
       }
 
@@ -426,6 +424,7 @@ namespace Texture64
                gv.Invalidate();
             }
          }
+         Properties.Settings.Default.ScaleIndex = toolStripScale.SelectedIndex;
       }
 
       private void SetBgColor(Color color)
