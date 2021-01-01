@@ -315,7 +315,6 @@
          // bgColorButton
          // 
          this.bgColorButton.Image = global::Texture64.Properties.Resources.color;
-         this.bgColorButton.ImageTransparentColor = System.Drawing.Color.Magenta;
          this.bgColorButton.Name = "bgColorButton";
          this.bgColorButton.Size = new System.Drawing.Size(46, 24);
          this.bgColorButton.Text = "&BG";

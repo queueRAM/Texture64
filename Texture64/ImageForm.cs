@@ -35,7 +35,7 @@ namespace Texture64
       private bool validDragData;
 
       // list of viewers to update
-      private List<GraphicsViewer> viewers = new List<GraphicsViewer>();
+      private readonly List<GraphicsViewer> viewers = new List<GraphicsViewer>();
 
       // graphics viewer that is being hovered over for mouse wheel hooking
       private GraphicsViewer hoverGV = null;
@@ -79,12 +79,11 @@ namespace Texture64
          }
       }
 
-      private bool pasteImage()
+      private bool PasteImage()
       {
          if (Clipboard.ContainsImage())
          {
-            Bitmap bm = Clipboard.GetImage() as Bitmap;
-            if (bm != null)
+            if (Clipboard.GetImage() is Bitmap bm)
             {
                InsertImage(bm);
                return true;
@@ -111,7 +110,7 @@ namespace Texture64
                return true;
             case (Keys.Control | Keys.V):
                // let Ctrl-V pass through if no image data
-               if (pasteImage())
+               if (PasteImage())
                {
                   return true;
                }
@@ -318,34 +317,36 @@ namespace Texture64
       {
          if (!NeedsSaveCancel())
          {
-            OpenFileDialog ofd = new OpenFileDialog();
-
-            ofd.Filter = "All Files (*.*)|*.*|Common ROMs (.*64)|*.*64";
-            ofd.FilterIndex = 1;
-
-            DialogResult dresult = ofd.ShowDialog();
-
-            if (dresult == DialogResult.OK)
+            using (OpenFileDialog ofd = new OpenFileDialog())
             {
-               LoadFile(ofd.FileName);
+               ofd.Filter = "All Files (*.*)|*.*|Common ROMs (.*64)|*.*64";
+               ofd.FilterIndex = 1;
+
+               DialogResult dresult = ofd.ShowDialog();
+
+               if (dresult == DialogResult.OK)
+               {
+                  LoadFile(ofd.FileName);
+               }
             }
          }
       }
 
       private void toolStripInsert_Click(object sender, EventArgs e)
       {
-         OpenFileDialog ofd = new OpenFileDialog();
-
-         ofd.Filter = "Image files (*.bmp, *.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.bmp; *.jpg; *.jpeg; *.jpe; *.jfif; *.png";
-         ofd.FilterIndex = 1;
-
-         DialogResult dresult = ofd.ShowDialog();
-
-         if (dresult == DialogResult.OK)
+         using (OpenFileDialog ofd = new OpenFileDialog())
          {
-            Bitmap bm = new Bitmap(ofd.FileName);
-            InsertImage(bm);
-            toolStripSave.Enabled = true;
+            ofd.Filter = "Image files (*.bmp, *.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.bmp; *.jpg; *.jpeg; *.jpe; *.jfif; *.png";
+            ofd.FilterIndex = 1;
+
+            DialogResult dresult = ofd.ShowDialog();
+
+            if (dresult == DialogResult.OK)
+            {
+               Bitmap bm = new Bitmap(ofd.FileName);
+               InsertImage(bm);
+               toolStripSave.Enabled = true;
+            }
          }
       }
 
@@ -434,6 +435,7 @@ namespace Texture64
             gv.BackColor = color;
          }
          gviewPalette.BackColor = color;
+         bgColorButton.ForeColor = color;
       }
 
       private void bgColorButton_Click(object sender, EventArgs e)
@@ -544,7 +546,7 @@ namespace Texture64
          UpdatePalette();
       }
 
-      private void offsetSplit(int delta)
+      private void OffsetSplit(int delta)
       {
          int offset = (int)numericSplitOffset.Value + delta;
          offset = Math.Max(0, Math.Min(paletteData.Length - Math.Abs(delta), offset));
@@ -554,13 +556,13 @@ namespace Texture64
       private void splitMinusButton_Click(object sender, EventArgs e)
       {
          int delta = (int)numericSplitLength.Value;
-         offsetSplit(-delta);
+         OffsetSplit(-delta);
       }
 
       private void splitPlusButton_Click(object sender, EventArgs e)
       {
          int delta = (int)numericSplitLength.Value;
-         offsetSplit(delta);
+         OffsetSplit(delta);
       }
 
       private void ImageForm_DragDrop(object sender, DragEventArgs e)
@@ -581,13 +583,11 @@ namespace Texture64
 
          if ((e.AllowedEffect & DragDropEffects.Copy) == DragDropEffects.Copy)
          {
-            Array data = ((IDataObject)e.Data).GetData("FileName") as Array;
-            if (data != null)
+            if (((IDataObject)e.Data).GetData("FileName") is Array data)
             {
                if ((data.Length == 1) && (data.GetValue(0) is String))
                {
                   filename = ((string[])data)[0];
-                  string ext = Path.GetExtension(filename).ToLower();
                   ret = true;
                }
             }
@@ -597,8 +597,7 @@ namespace Texture64
 
       private void ImageForm_DragEnter(object sender, DragEventArgs e)
       {
-         string filename;
-         validDragData = GetFilename(out filename, e);
+         validDragData = GetFilename(out string filename, e);
          if (validDragData)
          {
             if (lastFilename != filename)
@@ -615,10 +614,11 @@ namespace Texture64
 
       private void loadPaletteButton_Click(object sender, EventArgs e)
       {
-         OpenFileDialog ofd = new OpenFileDialog();
-
-         ofd.Filter = "All Files (*.*)|*.*|Common ROMs (.*64)|*.*64";
-         ofd.FilterIndex = 1;
+         OpenFileDialog ofd = new OpenFileDialog
+         {
+            Filter = "All Files (*.*)|*.*|Common ROMs (.*64)|*.*64",
+            FilterIndex = 1
+         };
 
          DialogResult dresult = ofd.ShowDialog();
 
@@ -700,10 +700,12 @@ namespace Texture64
 
       private void exportTexture(GraphicsViewer gv)
       {
-         SaveFileDialog sfd = new SaveFileDialog();
-         sfd.Filter = "PNG Image|*.png|JPEG Image|*.jpg|Bitmap Image|*.bmp";
-         sfd.Title = "Save as Image File";
-         sfd.FileName = String.Format("{0}.{1:X05}.{2}.png", basename, offset, N64Graphics.CodecString(gv.Codec));
+         SaveFileDialog sfd = new SaveFileDialog
+         {
+            Filter = "PNG Image|*.png|JPEG Image|*.jpg|Bitmap Image|*.bmp",
+            Title = "Save as Image File",
+            FileName = String.Format("{0}.{1:X05}.{2}.png", basename, offset, N64Graphics.CodecString(gv.Codec))
+         };
          DialogResult dResult = sfd.ShowDialog();
 
          if (dResult == DialogResult.OK)
@@ -770,12 +772,10 @@ namespace Texture64
             {
                case N64Codec.RGBA32:
                   nibblesPerPix = 8;
-                  pixOffset *= nibblesPerPix / 2;
                   break;
                case N64Codec.RGBA16:
                case N64Codec.IA16:
                   nibblesPerPix = 4;
-                  pixOffset *= nibblesPerPix / 2;
                   break;
                case N64Codec.IA8:
                case N64Codec.I8:
@@ -787,12 +787,10 @@ namespace Texture64
                case N64Codec.CI4:
                   selectBits = 4;
                   select = pixOffset & 0x1;
-                  pixOffset /= 2;
                   break;
                case N64Codec.ONEBPP:
                   selectBits = 1;
                   select = pixOffset & 0x7;
-                  pixOffset /= 8;
                   break;
             }
 
