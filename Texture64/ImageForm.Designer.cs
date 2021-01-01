@@ -780,6 +780,7 @@
          this.tableLayoutPanel1.Controls.Add(this.graphicsViewer16x16, 2, 3);
          this.tableLayoutPanel1.Controls.Add(this.graphicsViewer32x32, 1, 5);
          this.tableLayoutPanel1.Location = new System.Drawing.Point(154, 29);
+         this.tableLayoutPanel1.MinimumSize = new System.Drawing.Size(300, 0);
          this.tableLayoutPanel1.Name = "tableLayoutPanel1";
          this.tableLayoutPanel1.RowCount = 10;
          this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -805,7 +806,7 @@
          this.panel1.Controls.Add(this.numericUpDownHeight);
          this.panel1.Location = new System.Drawing.Point(3, 242);
          this.panel1.Name = "panel1";
-         this.panel1.Size = new System.Drawing.Size(185, 31);
+         this.panel1.Size = new System.Drawing.Size(160, 26);
          this.panel1.TabIndex = 36;
          // 
          // graphicsViewerCustom
@@ -815,13 +816,13 @@
          this.tableLayoutPanel1.SetColumnSpan(this.graphicsViewerCustom, 3);
          this.graphicsViewerCustom.ContextMenuStrip = this.gvContextMenuStrip;
          this.graphicsViewerCustom.Enabled = false;
-         this.graphicsViewerCustom.Location = new System.Drawing.Point(4, 280);
+         this.graphicsViewerCustom.Location = new System.Drawing.Point(4, 275);
          this.graphicsViewerCustom.Margin = new System.Windows.Forms.Padding(4);
          this.graphicsViewerCustom.Mode = Texture64.N64IMode.AlphaCopyIntensity;
          this.graphicsViewerCustom.Name = "graphicsViewerCustom";
          this.graphicsViewerCustom.PixScale = 2;
          this.graphicsViewerCustom.PixSize = new System.Drawing.Size(128, 128);
-         this.graphicsViewerCustom.Size = new System.Drawing.Size(256, 256);
+         this.graphicsViewerCustom.Size = new System.Drawing.Size(256, 253);
          this.graphicsViewerCustom.TabIndex = 9;
          this.graphicsViewerCustom.MouseDown += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseDown);
          this.graphicsViewerCustom.MouseEnter += new System.EventHandler(this.graphicsViewer_MouseEnter);
@@ -882,7 +883,7 @@
          this.graphicsViewer64x32.Name = "graphicsViewer64x32";
          this.graphicsViewer64x32.PixScale = 2;
          this.graphicsViewer64x32.PixSize = new System.Drawing.Size(64, 32);
-         this.tableLayoutPanel1.SetRowSpan(this.graphicsViewer64x32, 3);
+         this.tableLayoutPanel1.SetRowSpan(this.graphicsViewer64x32, 4);
          this.graphicsViewer64x32.Size = new System.Drawing.Size(128, 64);
          this.graphicsViewer64x32.TabIndex = 25;
          this.graphicsViewer64x32.MouseDown += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseDown);
@@ -924,6 +925,7 @@
          this.graphicsViewer8x8.Name = "graphicsViewer8x8";
          this.graphicsViewer8x8.PixScale = 2;
          this.graphicsViewer8x8.PixSize = new System.Drawing.Size(8, 8);
+         this.tableLayoutPanel1.SetRowSpan(this.graphicsViewer8x8, 2);
          this.graphicsViewer8x8.Size = new System.Drawing.Size(16, 16);
          this.graphicsViewer8x8.TabIndex = 6;
          this.graphicsViewer8x8.MouseDown += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseDown);
@@ -984,7 +986,7 @@
          this.graphicsViewer32x32.Name = "graphicsViewer32x32";
          this.graphicsViewer32x32.PixScale = 2;
          this.graphicsViewer32x32.PixSize = new System.Drawing.Size(32, 32);
-         this.tableLayoutPanel1.SetRowSpan(this.graphicsViewer32x32, 3);
+         this.tableLayoutPanel1.SetRowSpan(this.graphicsViewer32x32, 4);
          this.graphicsViewer32x32.Size = new System.Drawing.Size(64, 64);
          this.graphicsViewer32x32.TabIndex = 4;
          this.graphicsViewer32x32.MouseDown += new System.Windows.Forms.MouseEventHandler(this.graphicsViewer_MouseDown);
@@ -1091,11 +1093,11 @@
          this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
          this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
          this.ClientSize = new System.Drawing.Size(616, 586);
+         this.Controls.Add(this.groupBoxPalette);
          this.Controls.Add(this.groupBoxColor);
          this.Controls.Add(this.tableLayoutPanel1);
          this.Controls.Add(this.numericOffset);
          this.Controls.Add(this.label3);
-         this.Controls.Add(this.groupBoxPalette);
          this.Controls.Add(this.graphicsViewerMap);
          this.Controls.Add(this.vScrollBarOffset);
          this.Controls.Add(this.toolStrip1);
