@@ -1,8 +1,7 @@
 # Texture64
 N64 texture ripper and editor
 
-![Win7 Screenshot](https://i.imgur.com/g8H8IVc.png "RGBA16 SM64 HUD Elements - Win7")
-![Linux Screenshot](https://i.imgur.com/hCGskoi.png "CI8 MK64 Bombs - Linux")
+![Win10 Screenshot](https://user-images.githubusercontent.com/129774/103450795-122e3b80-4c70-11eb-856a-75b7d166ca0c.png "RGBA16 SM64 HUD Elements - Win10")
 
 ## Features
 * Export or import N64 textures of the following formats:
@@ -18,7 +17,7 @@ N64 texture ripper and editor
    * 1bpp
 * Load palette from separate file
 * Split palette mode to point part of palette to non-contiguous area
-* Multiplatform. Tested under Windows 7 and under mono on Linux
+* Multiplatform. Tested under Windows 10, Windows 7, and on Linux using [Mono](https://www.mono-project.com/)
 
 ### Usage ###
 * Right-click image to bring up context menu
@@ -36,6 +35,17 @@ N64 texture ripper and editor
 * Enable "External Palette" to use different file for CI palette
 
 ### Changelog ###
+
+0.2: UI Updates and bug fixes
+* Save settings for Form position, scale, BG color, custom viewer
+* Only show palette controls if CI is selected
+* Allow inserting images beyond the current file size
+* Correct behavior of drag-and-dropped files
+* Split file size text into its own status box
+* Correct 1bpp bit order to be MSbit first
+* Add alpha channel mode for I8 and I4 codecs
+
+0.1.1: Bug fixes
 
 0.1: Initial release
 * Improve IA4 color scaling

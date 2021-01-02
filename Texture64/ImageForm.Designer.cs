@@ -143,7 +143,7 @@
          this.statusStripFile.Name = "statusStripFile";
          this.statusStripFile.Size = new System.Drawing.Size(25, 17);
          this.statusStripFile.Text = "File";
-         this.statusStripFile.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+         this.statusStripFile.TextAlign = System.Drawing.ContentAlignment.TopLeft;
          this.statusStripFile.ToolTipText = "File Path";
          // 
          // toolStripStatusLabel1
@@ -270,6 +270,7 @@
          // toolStripAlpha
          // 
          this.toolStripAlpha.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+         this.toolStripAlpha.DropDownWidth = 65;
          this.toolStripAlpha.Enabled = false;
          this.toolStripAlpha.FlatStyle = System.Windows.Forms.FlatStyle.System;
          this.toolStripAlpha.Items.AddRange(new object[] {
